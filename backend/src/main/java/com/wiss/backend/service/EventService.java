@@ -39,7 +39,10 @@ public class EventService {
         // ToDo
 
     // Events nach Status filtern
-        // ToDo
+    public List<Event> getEventsbyStatus(String status) {
+        validateStatus(status);
+        return eventRepository.findByStatus(status.toLowerCase());
+    }
 
     // Anzahl aller Events
     public int getTotalEventsCount() {
@@ -47,6 +50,19 @@ public class EventService {
     }
 
 
-    // ToDo: Private Hilfsmethoden für die Validierung der Kategorien und Stati
+    // ToDo: Private Hilfsmethoden für die Validierung der Kategorien
+
+
+    // Validierung: Status
+    private void validateStatus(String status) {
+        if (status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("Status cannot be null or empty");
+        }
+
+        List<String> validStatus = List.of("open", "closed");
+        if (!validStatus.contains(status.toLowerCase())) {
+            throw new IllegalArgumentException("Status " + status + " is not valid. Valid statuses are: " + validStatus);
+        }
+    }
 
 }

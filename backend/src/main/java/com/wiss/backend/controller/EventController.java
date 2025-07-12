@@ -35,7 +35,10 @@ public class EventController {
         // ToDo
 
     // GET /api/events/status/open - Events nach Status
-        // ToDo
+    @GetMapping("/status/{status}")
+    public List<Event> getEventsByStatus(@PathVariable String status) {
+        return eventService.getEventsbyStatus(status);
+    }
 
     // GET /api/events/count - Anzahl aller Events
     @GetMapping("/count")

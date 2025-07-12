@@ -63,7 +63,11 @@ public class EventRepository {
         // ToDo
 
     // Events nach Status filtern
-        // ToDo
+    public List<Event> findByStatus(String status) {
+        return events.stream()
+                .filter(e -> e.getStatus().equals(status))
+                .toList();
+    }
 
     // Anzahl aller Events
     public int count() {

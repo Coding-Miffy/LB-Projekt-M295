@@ -4,38 +4,30 @@ import java.util.List;
 
 public class Event {
 
-    // {
-    //  "events": [
-    //    {
-    //      "id": "EONET_1234",
-    //      "title": "Wildfire in California",
-    //      "categories": [{ "id": "wildfires", "title": "Wildfires" }],
-    //      "geometry": [{ "coordinates": [-120.5, 36.2] }],
-    //      "status": "open"
-    //    }
-    //  ]
-    //}
-
+    // Felder
     private Long id;
     private String title;
-    private List<Category> categories;
-    private List<Geometry> geometry;
+    private String category;
+    private Double longitude;
+    private Double latitude;
     private String status;
 
     // Konstruktor ohne ID
-    public Event(String title, List<Category> categories, String status, List<Geometry> geometry) {
+    public Event(String title, String category, Double longitude, Double latitude, String status) {
         this.title = title;
-        this.geometry = geometry;
-        this.categories = categories;
+        this.category = category;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.status = status;
     }
 
     // Konstruktor mit ID
-    public Event(Long id, String title, List<Category> categories, String status, List<Geometry> geometry) {
+    public Event(Long id, String title, String category, Double longitude, Double latitude, String status) {
         this.id = id;
         this.title = title;
-        this.geometry = geometry;
-        this.categories = categories;
+        this.category = category;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.status = status;
     }
 
@@ -56,20 +48,28 @@ public class Event {
         this.title = title;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public List<Geometry> getGeometry() {
-        return geometry;
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setGeometry(List<Geometry> geometry) {
-        this.geometry = geometry;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     public String getStatus() {

@@ -32,7 +32,10 @@ public class EventController {
     }
 
     // GET /api/events/category/wildfires - Events nach Kategorie
-        // ToDo
+    @GetMapping("/categories/{category}")
+    public List<Event> getEventsByCategory(@PathVariable String category) {
+        return eventService.getEventsByCategory(category);
+    }
 
     // GET /api/events/status/open - Events nach Status
     @GetMapping("/status/{status}")

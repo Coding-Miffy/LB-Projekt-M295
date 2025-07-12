@@ -24,24 +24,36 @@ public class EventRepository {
         events.add(new Event(
                 1L,
                 "Wildfire in Zurich",
+                "wildfires",
+                8.55,
+                47.37,
                 "open"
         ));
 
         events.add(new Event(
                 2L,
                 "Flood in Manhattan",
+                "floods",
+                -73.99,
+                40.73,
                 "closed"
         ));
 
         events.add(new Event(
                 3L,
                 "Volcano in Naples",
+                "volcanoes",
+                14.48,
+                40.85,
                 "open"
         ));
 
         events.add(new Event(
                 4L,
                 "Iceberg in Antarctica",
+                "seaLakeIce",
+                -60.0,
+                -82.5,
                 "closed"
         ));
     }
@@ -60,7 +72,11 @@ public class EventRepository {
     }
 
     // Events nach Kategorie filtern
-        // ToDo
+    public List<Event> findByCategory(String category) {
+        return events.stream()
+                .filter(e -> e.getCategory().equals(category))
+                .toList();
+    }
 
     // Events nach Status filtern
     public List<Event> findByStatus(String status) {

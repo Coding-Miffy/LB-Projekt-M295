@@ -36,7 +36,10 @@ public class EventService {
     }
 
     // Events nach Kategorien filtern
-        // ToDo
+    public List<Event> getEventsByCategory(String category) {
+        validateCategory(category);
+        return eventRepository.findByCategory(category.toLowerCase());
+    }
 
     // Events nach Status filtern
     public List<Event> getEventsbyStatus(String status) {
@@ -49,9 +52,19 @@ public class EventService {
         return eventRepository.count();
     }
 
+    // Validierung: Kategorie
+    private void validateCategory(String category) {
+        if (category == null || category.trim().isEmpty()) {
+            throw new IllegalArgumentException("Category cannot be null or empty");
+        }
 
-    // ToDo: Private Hilfsmethoden für die Validierung der Kategorien
-
+        List<String> validCategories = List.of("drought", "dustHaze", "earthquakes", "floods",
+                "landslides", "manmade", "seaLakeIce", "severeStorms",
+                "snow", "tempExtremes", "volcanoes", "waterColor", "wildfires");
+        if (!validCategories.contains(category.toLowerCase())) {
+            throw new IllegalArgumentException("Category " + category + " is not valid. Valid categories are: " + validCategories);
+        }
+    }
 
     // Validierung: Status
     private void validateStatus(String status) {

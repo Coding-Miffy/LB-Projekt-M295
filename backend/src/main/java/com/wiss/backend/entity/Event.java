@@ -1,7 +1,5 @@
 package com.wiss.backend.entity;
 
-import java.util.List;
-
 public class Event {
 
     // Felder

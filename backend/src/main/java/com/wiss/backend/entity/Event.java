@@ -18,22 +18,25 @@ public class Event {
 
     private Long id;
     private String title;
-    // ToDo: categories und geometry
+    private List<Category> categories;
+    private List<Geometry> geometry;
     private String status;
 
     // Konstruktor ohne ID
-    public Event(String title, String status) {
+    public Event(String title, List<Category> categories, String status, List<Geometry> geometry) {
         this.title = title;
+        this.geometry = geometry;
+        this.categories = categories;
         this.status = status;
-        // ToDo: categories und geometry
     }
 
     // Konstruktor mit ID
-    public Event(Long id, String title, String status) {
+    public Event(Long id, String title, List<Category> categories, String status, List<Geometry> geometry) {
         this.id = id;
         this.title = title;
+        this.geometry = geometry;
+        this.categories = categories;
         this.status = status;
-        // ToDo: categories und geometry
     }
 
     // Getter & Setter
@@ -53,6 +56,22 @@ public class Event {
         this.title = title;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public List<Geometry> getGeometry() {
+        return geometry;
+    }
+
+    public void setGeometry(List<Geometry> geometry) {
+        this.geometry = geometry;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -61,5 +80,4 @@ public class Event {
         this.status = status;
     }
 
-    // ToDo: categories und geometry
 }

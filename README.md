@@ -14,3 +14,4 @@
 - Swagger (Controller + DTO) *5B*
 - JavaDoc
 - Service: Date Validierung?
+- Sicherstellen: Alles zu Date komplett?

@@ -85,6 +85,40 @@ public class EventRepository {
                 .toList();
     }
 
+    // save macht CREATE und UPDATE
+    public Event save(Event event) {
+        if (event.getId() == null) {
+            event.setId(generateNextId());
+            events.add(event);
+        } else {
+            Event existingEvent = findById(event.getId());
+            if (existingEvent == null) {
+                throw new RuntimeException("Event with id " + event.getId() + " not found");
+            }
+            int index = events.indexOf(existingEvent);
+            events.set(index, event);
+        }
+        return event;
+    }
+
+    // Event löschen
+    public boolean deleteById(Long id) {
+        return events.removeIf(e -> e.getId().equals(id));
+    }
+
+    // Hilfsmethode: Prüfen ob ID existiert
+    public boolean existsById(Long id) {
+        return findById(id) != null;
+    }
+
+    // Hilfsmethode: Nächste Id generieren
+    private Long generateNextId() {
+        return events.stream()
+                .mapToLong(Event::getId)
+                .max()
+                .orElse(0L) + 1;
+    }
+
     // Anzahl aller Events
     public int count() {
         return events.size();

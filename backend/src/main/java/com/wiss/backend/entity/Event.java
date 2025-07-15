@@ -10,7 +10,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // <- PostgreSQL macht Auto-Increment
     private Long id;
 
-    @Column(name = "title", nullable = false, length = 255)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "category", nullable = false, length = 50)

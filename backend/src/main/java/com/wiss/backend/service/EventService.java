@@ -40,7 +40,7 @@ public class EventService {
     }
 
     // Events nach Status filtern
-    public List<EventDTO> getEventsbyStatusAsDTO(String status) {
+    public List<EventDTO> getEventsByStatusAsDTO(String status) {
         List<Event> entities = eventRepository.findByStatus(status);
         return EventMapper.toDTOList(entities);
     }
@@ -148,6 +148,85 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
+    // Custom Queries
+    // Kategorie + Status
+    public List<EventDTO> getEventsByCategoryAndStatus(String category, String status) {
+        validateCategory(category);
+        validateStatus(status);
+
+        List<Event> entities = eventRepository.findByCategoryAndStatus(category, status);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Startdatum + Enddatum
+    public List<EventDTO> getEventsByDateBetween(LocalDate start, LocalDate end) {
+        List<Event> entities = eventRepository.findByDateBetween(start, end);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Kategorie + Startdatum + Enddatum
+    public List<EventDTO> getEventsByCategoryAndDateBetween(String category, LocalDate start, LocalDate end) {
+        validateCategory(category);
+
+        List<Event> entities = eventRepository.findByCategoryAndDateBetween(category, start, end);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Status + Startdatum + Enddatum
+    public List<EventDTO> getEventsByStatusAndDateBetween(String status, LocalDate start, LocalDate end) {
+        validateStatus(status);
+
+        List<Event> entities = eventRepository.findByStatusAndDateBetween(status, start, end);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Kategorie + Status + Startdatum + Enddatum
+    public List<EventDTO> getEventsByCategoryAndStatusAndDateBetween(String category, String status, LocalDate start, LocalDate end) {
+        validateCategory(category);
+        validateStatus(status);
+
+        List<Event> entities = eventRepository.findByCategoryAndStatusAndDateBetween(category, status, start, end);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Anzahl nach Kategorie
+    public long getTotalEventsByCategory(String category) {
+        validateCategory(category);
+        return eventRepository.countByCategory(category);
+    }
+
+    // Anzahl nach Status
+    public long getTotalEventsByStatus(String status) {
+        validateStatus(status);
+        return eventRepository.countByStatus(status);
+    }
+
+    // Anzahl nach Zeitraum
+    public long getTotalEventsByDateBetween(LocalDate start, LocalDate end) {
+        return eventRepository.countByDateBetween(start, end);
+    }
+
+    // Nach Kategorie, geordnet nach Datum
+    public List<EventDTO> getEventsByCategoryOrderByDateDesc(String category) {
+        validateCategory(category);
+        List<Event> entities = eventRepository.findByCategoryOrderByDateDesc(category);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Nach Status, geordnet nach Datum
+    public List<EventDTO> getEventsByStatusOrderByDateDesc(String status) {
+        validateStatus(status);
+        List<Event> entities = eventRepository.findByStatusOrderByDateDesc(status);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Nach Datum, geordnet nach Datum
+    public List<EventDTO> getEventsByDateBetweenOrderByDateDesc(LocalDate start, LocalDate end) {
+        List<Event> entities = eventRepository.findByDateBetweenOrderByDateDesc(start, end);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Validierung
     // Validierung: Kategorie
     private void validateCategory(String category) {
         if (category == null || category.trim().isEmpty()) {

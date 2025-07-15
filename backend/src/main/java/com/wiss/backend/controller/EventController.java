@@ -38,7 +38,7 @@ public class EventController {
     // GET /api/events/status/open - Events nach Status
     @GetMapping("/status/{status}")
     public List<EventDTO> getEventsByStatus(@PathVariable String status) {
-        return eventService.getEventsbyStatusAsDTO(status);
+        return eventService.getEventsByStatusAsDTO(status);
     }
 
     // GET /api/events/2025-07-11
@@ -69,5 +69,42 @@ public class EventController {
     @DeleteMapping("/{id}")
     public void deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
+    }
+
+    // Kombinierte Filter
+    @GetMapping("/filter")
+    public List<EventDTO> getEventsByFilter(@RequestParam(required = false) String category,
+                                            @RequestParam(required = false) String status,
+                                            @RequestParam(required = false) LocalDate start,
+                                            @RequestParam(required = false) LocalDate end) {
+        if (category != null && status != null && start != null && end != null) {
+            return eventService.getEventsByCategoryAndStatusAndDateBetween(category, status, start, end);
+        } else if (category != null && start != null && end != null) {
+            return eventService.getEventsByCategoryAndDateBetween(category, start, end);
+        } else if (category != null && status != null) {
+            return eventService.getEventsByCategoryAndStatus(category, status);
+        } else if (status != null && start != null && end != null) {
+            return eventService.getEventsByStatusAndDateBetween(status, start, end);
+        } else if (start != null && end != null) {
+            return eventService.getEventsByDateBetween(start, end);
+        } else {
+            return eventService.getAllEventsAsDTO();
+        }
+    }
+
+    // Statistiken
+    @GetMapping("/stats/categories/{category}")
+    public long getEventCountByCategory(@PathVariable String category) {
+        return eventService.getTotalEventsByCategory(category);
+    }
+
+    @GetMapping("/stats/status/{status}")
+    public long getEventCountByStatus(@PathVariable String status) {
+        return eventService.getTotalEventsByStatus(status);
+    }
+
+    @GetMapping("/stats/date/{start}/{end}")
+    public long getEventCountByDateBetween(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+        return eventService.getTotalEventsByDateBetween(start, end);
     }
 }

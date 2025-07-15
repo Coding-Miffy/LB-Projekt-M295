@@ -4,6 +4,7 @@ import com.wiss.backend.dto.EventDTO;
 import com.wiss.backend.service.EventService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -38,6 +39,12 @@ public class EventController {
     @GetMapping("/status/{status}")
     public List<EventDTO> getEventsByStatus(@PathVariable String status) {
         return eventService.getEventsbyStatusAsDTO(status);
+    }
+
+    // GET /api/events/2025-07-11
+    @GetMapping("/date/{date}")
+    public List<EventDTO> getEventsByDate(@PathVariable LocalDate date) {
+        return eventService.getEventsByDateAsDTO(date);
     }
 
     // GET /api/events/count - Anzahl aller Events

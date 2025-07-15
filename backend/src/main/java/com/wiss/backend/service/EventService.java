@@ -6,6 +6,7 @@ import com.wiss.backend.mapper.EventMapper;
 import com.wiss.backend.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,12 @@ public class EventService {
         return EventMapper.toDTOList(entities);
     }
 
+    // Events nach Datum filtern
+    public List<EventDTO> getEventsByDateAsDTO(LocalDate date) {
+        List<Event> entities = eventRepository.findByDate(date);
+        return EventMapper.toDTOList(entities);
+    }
+
 
     // Weitere Methoden
     // Alle Events abrufen
@@ -72,9 +79,14 @@ public class EventService {
     }
 
     // Events nach Status filtern
-    public List<Event> getEventsbyStatus(String status) {
+    public List<Event> getEventsByStatus(String status) {
         validateStatus(status);
         return eventRepository.findByStatus(status.toLowerCase());
+    }
+
+    // Events nach Datum filtern
+    public List<Event> getEventsByDate(LocalDate date) {
+        return eventRepository.findByDate(date);
     }
 
     // Anzahl aller Events

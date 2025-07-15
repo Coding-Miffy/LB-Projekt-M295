@@ -1,7 +1,6 @@
 package com.wiss.backend.controller;
 
 import com.wiss.backend.dto.EventDTO;
-import com.wiss.backend.entity.Event;
 import com.wiss.backend.service.EventService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

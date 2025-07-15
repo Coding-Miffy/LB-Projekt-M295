@@ -7,6 +7,7 @@ import com.wiss.backend.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -56,12 +57,12 @@ public class EventService {
             throw new IllegalArgumentException("Id cannot be null");
         }
 
-        Event event = eventRepository.findById(id);
-        if (event == null) {
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if (optionalEvent.isEmpty()) {
             throw new RuntimeException("Event with id " + id + " not found");
         }
 
-        return event;
+        return optionalEvent.get();
     }
 
     // Events nach Kategorien filtern
@@ -77,7 +78,7 @@ public class EventService {
     }
 
     // Anzahl aller Events
-    public int getTotalEventsCount() {
+    public long getTotalEventsCount() {
         return eventRepository.count();
     }
 
@@ -125,14 +126,14 @@ public class EventService {
     }
 
     // Event löschen
-    public boolean deleteEvent(Long id) {
+    public void deleteEvent(Long id) {
         // 1. Prüfen ob Event existiert
         if (!eventRepository.existsById(id)) {
             throw new RuntimeException("Event with id " + id + " not found");
         }
 
         // 2. Repository.deleteById() aufrufen und Ergebnis zurückgeben
-        return eventRepository.deleteById(id);
+        eventRepository.deleteById(id);
     }
 
     // Validierung: Kategorie

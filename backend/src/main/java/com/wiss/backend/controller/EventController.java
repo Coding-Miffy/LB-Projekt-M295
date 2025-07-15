@@ -42,7 +42,7 @@ public class EventController {
 
     // GET /api/events/count - Anzahl aller Events
     @GetMapping("/count")
-    public int getEventCount() {
+    public long getEventCount() {
         return eventService.getTotalEventsCount();
     }
 

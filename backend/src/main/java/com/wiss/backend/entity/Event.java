@@ -1,14 +1,32 @@
 package com.wiss.backend.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "events")
 public class Event {
 
-    // Felder
+    @Id // <- Primary Key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // <- PostgreSQL macht Auto-Increment
     private Long id;
+
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
+
+    @Column(name = "category", nullable = false, length = 50)
     private String category;
+
+    @Column(name = "longitude", length = 50)
     private Double longitude;
+
+    @Column(name = "latitude", length = 50)
     private Double latitude;
+
+    @Column(name = "status", nullable = false, length = 50)
     private String status;
+
+    // Default Konstruktor
+    public Event() {}
 
     // Konstruktor ohne ID
     public Event(String title, String category, Double longitude, Double latitude, String status) {

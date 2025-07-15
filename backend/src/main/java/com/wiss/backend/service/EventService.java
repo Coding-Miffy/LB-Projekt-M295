@@ -81,6 +81,60 @@ public class EventService {
         return eventRepository.count();
     }
 
+    // Neues Event erstellen
+    public EventDTO createEvent(EventDTO dto) {
+        // 1. Validierung
+        if (dto.getTitle() == null || dto.getTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+
+        if (dto.getCategory() == null || dto.getCategory().trim().isEmpty()) {
+            throw new IllegalArgumentException("Category cannot be null or empty");
+        }
+
+        if (dto.getStatus() == null || dto.getStatus().trim().isEmpty()) {
+            throw new IllegalArgumentException("Status cannot be null or empty");
+        }
+
+        // 2. DTO zu Entity konvertieren
+        Event entity = EventMapper.toEntity(dto);
+
+        // 3. Repository.save() aufrufen (erkennt automatisch CREATE)
+        Event newEvent = eventRepository.save(entity);
+
+        // 4. Gespeicherte Entity zu DTO konvertieren und zurückgeben
+        return EventMapper.toDTO(newEvent);
+    }
+
+    // Event aktualisieren
+    public EventDTO updateEvent(Long id, EventDTO dto) {
+        // 1. Prüfen ob Event existiert
+        if (!eventRepository.existsById(id)) {
+            throw new RuntimeException("Event with id " + id + " not found");
+        }
+
+        // 2. DTO zu Entity konvertieren und Id setzen
+        Event entity = EventMapper.toEntity(dto);
+        entity.setId(id); // <- Wichtig: id setzen für UPDATE-Erkennung
+
+        // 3. Repository.save() aufrufen (erkennt automatisch UPDATE)
+        Event updatedEntity = eventRepository.save(entity);
+
+        // 4. Aktualisierte Entity zu DTO konvertieren und zurückgeben
+        return EventMapper.toDTO(updatedEntity);
+    }
+
+    // Event löschen
+    public boolean deleteEvent(Long id) {
+        // 1. Prüfen ob Event existiert
+        if (!eventRepository.existsById(id)) {
+            throw new RuntimeException("Event with id " + id + " not found");
+        }
+
+        // 2. Repository.deleteById() aufrufen und Ergebnis zurückgeben
+        return eventRepository.deleteById(id);
+    }
+
     // Validierung: Kategorie
     private void validateCategory(String category) {
         if (category == null || category.trim().isEmpty()) {

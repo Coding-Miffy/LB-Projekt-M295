@@ -2,10 +2,7 @@ package com.wiss.backend.controller;
 
 import com.wiss.backend.dto.EventDTO;
 import com.wiss.backend.service.EventService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class EventController {
         return eventService.getEventByIdAsDTO(id);
     }
 
-    // GET /api/events/category/wildfires - Events nach Kategorie
+    // GET /api/events/category/floods - Events nach Kategorie
     @GetMapping("/categories/{category}")
     public List<EventDTO> getEventsByCategory(@PathVariable String category) {
         return eventService.getEventsByCategoryAsDTO(category);
@@ -47,5 +44,23 @@ public class EventController {
     @GetMapping("/count")
     public int getEventCount() {
         return eventService.getTotalEventsCount();
+    }
+
+    // POST /api/events - Neues Event erstellen
+    @PostMapping
+    public EventDTO createEvent(@RequestBody EventDTO eventDTO) {
+        return eventService.createEvent(eventDTO);
+    }
+
+    // PUT /api/events/2 - Event aktualisieren
+    @PutMapping("/{id}")
+    public EventDTO updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
+        return eventService.updateEvent(id, eventDTO);
+    }
+
+    // DELETE /api/events/5 - Event löschen
+    @DeleteMapping("/{id}")
+    public void deleteEvent(@PathVariable Long id) {
+        eventService.deleteEvent(id);
     }
 }

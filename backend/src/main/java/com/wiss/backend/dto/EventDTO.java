@@ -1,9 +1,12 @@
 package com.wiss.backend.dto;
 
+import java.time.LocalDate;
+
 public class EventDTO {
 
     private Long id;
     private String title;
+    private LocalDate date;
     private String category;
     private Double longitude;
     private Double latitude;
@@ -13,9 +16,10 @@ public class EventDTO {
     public EventDTO() {}
 
     // Vollständiger Konstruktor
-    public EventDTO(Long id, String title, String category, Double longitude, Double latitude, String status) {
+    public EventDTO(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, String status) {
         this.id = id;
         this.title = title;
+        this.date = date;
         this.category = category;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -38,6 +42,10 @@ public class EventDTO {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public LocalDate getDate() { return date; }
+
+    public void setDate(LocalDate date) { this.date = date; }
 
     public String getCategory() {
         return category;

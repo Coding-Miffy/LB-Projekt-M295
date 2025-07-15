@@ -2,6 +2,9 @@ package com.wiss.backend.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Table(name = "events")
 public class Event {
@@ -12,6 +15,9 @@ public class Event {
 
     @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
 
     @Column(name = "category", nullable = false, length = 50)
     private String category;
@@ -29,8 +35,9 @@ public class Event {
     public Event() {}
 
     // Konstruktor ohne ID
-    public Event(String title, String category, Double longitude, Double latitude, String status) {
+    public Event(String title, LocalDate date, String category, Double longitude, Double latitude, String status) {
         this.title = title;
+        this.date = date;
         this.category = category;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -38,9 +45,10 @@ public class Event {
     }
 
     // Konstruktor mit ID
-    public Event(Long id, String title, String category, Double longitude, Double latitude, String status) {
+    public Event(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, String status) {
         this.id = id;
         this.title = title;
+        this.date = date;
         this.category = category;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -63,6 +71,10 @@ public class Event {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public LocalDate getDate() { return date; }
+
+    public void setDate(LocalDate date) { this.date = date; }
 
     public String getCategory() {
         return category;

@@ -16,6 +16,7 @@ public class EventMapper {
         return new EventDTO(
                 entity.getId(),
                 entity.getTitle(),
+                entity.getDate(),
                 entity.getCategory(),
                 entity.getLongitude(),
                 entity.getLatitude(),
@@ -32,6 +33,7 @@ public class EventMapper {
         // (Id wird für PUT getrennt behandelt, für POST ignoriert)
         return new Event(
                 dto.getTitle(),
+                dto.getDate(),
                 dto.getCategory(),
                 dto.getLongitude(),
                 dto.getLatitude(),

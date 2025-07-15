@@ -1,6 +1,8 @@
 package com.wiss.backend.service;
 
+import com.wiss.backend.dto.EventDTO;
 import com.wiss.backend.entity.Event;
+import com.wiss.backend.mapper.EventMapper;
 import com.wiss.backend.repository.EventRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,33 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
+    // DTO-basierte Methoden
+    // Alle Events abrufen
+    public List<EventDTO> getAllEventsAsDTO() {
+        List<Event> entities = eventRepository.findAll();
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Ein spezifisches Event finden
+    public EventDTO getEventByIdAsDTO(Long id) {
+        Event entity = getEventById(id);
+        return EventMapper.toDTO(entity);
+    }
+
+    // Events nach Kategorien filtern
+    public List<EventDTO> getEventsByCategoryAsDTO(String category) {
+        List<Event> entities = eventRepository.findByCategory(category);
+        return EventMapper.toDTOList(entities);
+    }
+
+    // Events nach Status filtern
+    public List<EventDTO> getEventsbyStatusAsDTO(String status) {
+        List<Event> entities = eventRepository.findByStatus(status);
+        return EventMapper.toDTOList(entities);
+    }
+
+
+    // Weitere Methoden
     // Alle Events abrufen
     public List<Event> getAllEvents() {
         return eventRepository.findAll();

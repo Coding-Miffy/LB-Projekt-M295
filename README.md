@@ -15,6 +15,7 @@
 - JavaDoc
 - Service: Date Validierung?
 - Sicherstellen: Alles zu Date komplett?
+- Stehen geblieben bei *6A*: Service anpassen
 
 ## Notizen:
 **Was muss die API können?**

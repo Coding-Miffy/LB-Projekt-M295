@@ -22,10 +22,10 @@ public class Event {
     @Column(name = "category", nullable = false, length = 50)
     private String category;
 
-    @Column(name = "longitude", length = 50)
+    @Column(name = "longitude", nullable = false, length = 50)
     private Double longitude;
 
-    @Column(name = "latitude", length = 50)
+    @Column(name = "latitude", nullable = false, length = 50)
     private Double latitude;
 
     @Column(name = "status", nullable = false, length = 50)

@@ -12,6 +12,7 @@
 ## To-Do:  
 - Advanced Query Methods *5A*
 - Swagger (Controller + DTO) *5B*
+- Swagger Controller: /date
 - JavaDoc
 - Service: Date Validierung?
 - Sicherstellen: Alles zu Date komplett?

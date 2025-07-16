@@ -2,6 +2,9 @@ package com.wiss.backend.service;
 
 import com.wiss.backend.dto.EventDTO;
 import com.wiss.backend.entity.Event;
+import com.wiss.backend.exception.CategoryNotFoundException;
+import com.wiss.backend.exception.EventNotFoundException;
+import com.wiss.backend.exception.StatusNotFoundException;
 import com.wiss.backend.mapper.EventMapper;
 import com.wiss.backend.repository.EventRepository;
 import org.springframework.stereotype.Service;
@@ -27,9 +30,14 @@ public class EventService {
         return EventMapper.toDTOList(entities);
     }
 
-    // Ein spezifisches Event finden
+    // Ein spezifisches Event finden (Exception-Handling umgesetzt)
     public EventDTO getEventByIdAsDTO(Long id) {
-        Event entity = getEventById(id);
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+
+        Event entity = eventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
         return EventMapper.toDTO(entity);
     }
 
@@ -58,15 +66,15 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    // Ein spezifisches Event finden
+    // Ein spezifisches Event finden (Exception-Handling umgesetzt)
     public Event getEventById(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
+            throw new IllegalArgumentException("ID cannot be null");
         }
 
         Optional<Event> optionalEvent = eventRepository.findById(id);
         if (optionalEvent.isEmpty()) {
-            throw new RuntimeException("Event with id " + id + " not found");
+            throw new EventNotFoundException(id);
         }
 
         return optionalEvent.get();
@@ -119,11 +127,11 @@ public class EventService {
         return EventMapper.toDTO(newEvent);
     }
 
-    // Event aktualisieren
+    // Event aktualisieren (Exception-Handling umgesetzt)
     public EventDTO updateEvent(Long id, EventDTO dto) {
         // 1. Prüfen ob Event existiert
         if (!eventRepository.existsById(id)) {
-            throw new RuntimeException("Event with id " + id + " not found");
+            throw new EventNotFoundException(id);
         }
 
         // 2. DTO zu Entity konvertieren und Id setzen
@@ -137,11 +145,11 @@ public class EventService {
         return EventMapper.toDTO(updatedEntity);
     }
 
-    // Event löschen
+    // Event löschen (Exception-Handling umgesetzt)
     public void deleteEvent(Long id) {
         // 1. Prüfen ob Event existiert
         if (!eventRepository.existsById(id)) {
-            throw new RuntimeException("Event with id " + id + " not found");
+            throw new EventNotFoundException(id);
         }
 
         // 2. Repository.deleteById() aufrufen und Ergebnis zurückgeben
@@ -227,7 +235,7 @@ public class EventService {
     }
 
     // Validierung
-    // Validierung: Kategorie
+    // Validierung: Kategorie (Exception-Handling umgesetzt)
     private void validateCategory(String category) {
         if (category == null || category.trim().isEmpty()) {
             throw new IllegalArgumentException("Category cannot be null or empty");
@@ -237,11 +245,11 @@ public class EventService {
                 "landslides", "manmade", "seaLakeIce", "severeStorms",
                 "snow", "tempExtremes", "volcanoes", "waterColor", "wildfires");
         if (!validCategories.contains(category.toLowerCase())) {
-            throw new IllegalArgumentException("Category " + category + " is not valid. Valid categories are: " + validCategories);
+            throw new CategoryNotFoundException(category);
         }
     }
 
-    // Validierung: Status
+    // Validierung: Status (Exception-Handling umgesetzt)
     private void validateStatus(String status) {
         if (status == null || status.trim().isEmpty()) {
             throw new IllegalArgumentException("Status cannot be null or empty");
@@ -249,7 +257,7 @@ public class EventService {
 
         List<String> validStatus = List.of("open", "closed");
         if (!validStatus.contains(status.toLowerCase())) {
-            throw new IllegalArgumentException("Status " + status + " is not valid. Valid statuses are: " + validStatus);
+            throw new StatusNotFoundException(status);
         }
     }
 

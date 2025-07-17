@@ -1,6 +1,7 @@
 package com.wiss.backend.dto;
 
 import com.wiss.backend.controller.EventController;
+import com.wiss.backend.model.EventCategory;
 import com.wiss.backend.model.EventStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
@@ -23,11 +24,9 @@ public class EventFormDTO {
     @Schema(description = "Datum des Events", example = "2025-07-01")
     private LocalDate date;
 
-    @NotBlank(message = "Kategorie ist erforderlich")
-    @Pattern(regexp = "wildfires|severeStorms|volcanoes|seaLakeIce|earthquakes|floods|landslides|snow|drought|dustHaze|manmade|waterColor",
-            message = "Ungültige Kategorie. Erlaubt sind: wildfires, severeStorms, volcanoes, seaLakeIce, earthquakes, floods, landslides, snow, drought, dustHaze, manmade, waterColor")
+    @NotNull(message = "Kategorie ist erforderlich")
     @Schema(description = "Kategorie des Events", example = "floods")
-    private String category;
+    private EventCategory category;
 
     @NotNull(message = "Längengrad ist erforderlich")
     @DecimalMin(value = "-180.0", inclusive = true, message = "Längengrad muss >= -180.0 sein")
@@ -49,7 +48,7 @@ public class EventFormDTO {
     public EventFormDTO() {}
 
     // Vollständiger Konstruktor für das Erstellen eines EventFormDTO.
-    public EventFormDTO(String title, LocalDate date, String category, Double longitude, Double latitude, EventStatus status) {
+    public EventFormDTO(String title, LocalDate date, EventCategory category, Double longitude, Double latitude, EventStatus status) {
         this.title = title;
         this.date = date;
         this.category = category;
@@ -59,7 +58,7 @@ public class EventFormDTO {
     }
 
     // Vollständiger Konstruktor für das Bearbeiten eines EventFormDTO.
-    public EventFormDTO(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, EventStatus status) {
+    public EventFormDTO(Long id, String title, LocalDate date, EventCategory category, Double longitude, Double latitude, EventStatus status) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -94,11 +93,11 @@ public class EventFormDTO {
         this.date = date;
     }
 
-    public String getCategory() {
+    public EventCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(EventCategory category) {
         this.category = category;
     }
 

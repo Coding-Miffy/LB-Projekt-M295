@@ -3,6 +3,7 @@ package com.wiss.backend.controller;
 import com.wiss.backend.dto.EventDTO;
 import com.wiss.backend.dto.EventFormDTO;
 import com.wiss.backend.entity.Event;
+import com.wiss.backend.model.EventCategory;
 import com.wiss.backend.model.EventStatus;
 import com.wiss.backend.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,7 +64,7 @@ public class EventController {
     @ApiResponse(responseCode = "400", description = "Ungültige Kategorie übergeben")
     public List<EventDTO> getEventsByCategory(
             @Parameter(description = "Kategorie", example = "wildfires", required = true)
-            @PathVariable String category) {
+            @PathVariable EventCategory category) {
         return eventService.getEventsByCategoryAsDTO(category);
     }
 
@@ -155,7 +155,7 @@ public class EventController {
     @ApiResponse(responseCode = "400", description = "Ungültige Daten übergeben")
     public List<EventDTO> getEventsByFilter(
             @Parameter(description = "Kategorie", example = "wildfires")
-            @RequestParam(required = false) String category,
+            @RequestParam(required = false) EventCategory category,
             @Parameter(description = "Status", example = "open")
             @RequestParam(required = false) EventStatus status,
             @Parameter(description = "Startdatum", example = "2025-07-01")
@@ -187,7 +187,7 @@ public class EventController {
     @ApiResponse(responseCode = "400", description = "Ungültige Kategorie übergeben")
     public long getEventCountByCategory(
             @Parameter(description = "Kategorie", example = "wildfires", required = true)
-            @PathVariable String category) {
+            @PathVariable EventCategory category) {
         return eventService.getTotalEventsByCategory(category);
     }
 

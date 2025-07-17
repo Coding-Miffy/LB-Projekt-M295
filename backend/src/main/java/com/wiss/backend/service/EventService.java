@@ -7,6 +7,7 @@ import com.wiss.backend.exception.CategoryNotFoundException;
 import com.wiss.backend.exception.EventNotFoundException;
 import com.wiss.backend.exception.StatusNotFoundException;
 import com.wiss.backend.mapper.EventMapper;
+import com.wiss.backend.model.EventCategory;
 import com.wiss.backend.model.EventStatus;
 import com.wiss.backend.repository.EventRepository;
 import org.springframework.stereotype.Service;
@@ -44,8 +45,7 @@ public class EventService {
     }
 
     // Events nach Kategorien filtern
-    public List<EventDTO> getEventsByCategoryAsDTO(String category) {
-        validateCategory(category);
+    public List<EventDTO> getEventsByCategoryAsDTO(EventCategory category) {
         List<Event> entities = eventRepository.findByCategory(category);
         return EventMapper.toDTOList(entities);
     }
@@ -85,9 +85,8 @@ public class EventService {
     }
 
     // Events nach Kategorien filtern
-    public List<Event> getEventsByCategory(String category) {
-        validateCategory(category);
-        return eventRepository.findByCategory(category.toLowerCase());
+    public List<Event> getEventsByCategory(EventCategory category) {
+        return eventRepository.findByCategory(category);
     }
 
     // Events nach Status filtern
@@ -113,14 +112,13 @@ public class EventService {
             throw new IllegalArgumentException("Title cannot be null or empty");
         }
 
-        if (dto.getCategory() == null || dto.getCategory().trim().isEmpty()) {
-            throw new IllegalArgumentException("Category cannot be null or empty");
+        if (dto.getCategory() == null) {
+            throw new IllegalArgumentException("Category cannot be null");
         }
 
-
-
-        validateCategory(dto.getCategory());
-
+        if (dto.getStatus() == null) {
+            throw new IllegalArgumentException("Status cannot be null");
+        }
 
         // 2. DTO zu Entity konvertieren
         Event entity = EventMapper.toEntity(dto);
@@ -143,8 +141,6 @@ public class EventService {
         Event entity = EventMapper.toEntity(dto);
         entity.setId(id); // <- Wichtig: id setzen für UPDATE-Erkennung
 
-        validateCategory(dto.getCategory());
-
         // 3. Repository.save() aufrufen (erkennt automatisch UPDATE)
         Event updatedEntity = eventRepository.save(entity);
 
@@ -165,10 +161,7 @@ public class EventService {
 
     // Custom Queries
     // Kategorie + Status
-    public List<EventDTO> getEventsByCategoryAndStatus(String category, EventStatus status) {
-        validateCategory(category);
-
-
+    public List<EventDTO> getEventsByCategoryAndStatus(EventCategory category, EventStatus status) {
         List<Event> entities = eventRepository.findByCategoryAndStatus(category, status);
         return EventMapper.toDTOList(entities);
     }
@@ -180,9 +173,7 @@ public class EventService {
     }
 
     // Kategorie + Startdatum + Enddatum
-    public List<EventDTO> getEventsByCategoryAndDateBetween(String category, LocalDate start, LocalDate end) {
-        validateCategory(category);
-
+    public List<EventDTO> getEventsByCategoryAndDateBetween(EventCategory category, LocalDate start, LocalDate end) {
         List<Event> entities = eventRepository.findByCategoryAndDateBetween(category, start, end);
         return EventMapper.toDTOList(entities);
     }
@@ -196,17 +187,13 @@ public class EventService {
     }
 
     // Kategorie + Status + Startdatum + Enddatum
-    public List<EventDTO> getEventsByCategoryAndStatusAndDateBetween(String category, EventStatus status, LocalDate start, LocalDate end) {
-        validateCategory(category);
-
-
+    public List<EventDTO> getEventsByCategoryAndStatusAndDateBetween(EventCategory category, EventStatus status, LocalDate start, LocalDate end) {
         List<Event> entities = eventRepository.findByCategoryAndStatusAndDateBetween(category, status, start, end);
         return EventMapper.toDTOList(entities);
     }
 
     // Anzahl nach Kategorie
-    public long getTotalEventsByCategory(String category) {
-        validateCategory(category);
+    public long getTotalEventsByCategory(EventCategory category) {
         return eventRepository.countByCategory(category);
     }
 
@@ -222,8 +209,7 @@ public class EventService {
     }
 
     // Nach Kategorie, geordnet nach Datum
-    public List<EventDTO> getEventsByCategoryOrderByDateDesc(String category) {
-        validateCategory(category);
+    public List<EventDTO> getEventsByCategoryOrderByDateDesc(EventCategory category) {
         List<Event> entities = eventRepository.findByCategoryOrderByDateDesc(category);
         return EventMapper.toDTOList(entities);
     }
@@ -264,8 +250,6 @@ public class EventService {
 
     // Neues Event erstellen
     public EventFormDTO createEventFromForm(Event event) {
-        validateCategory(event.getCategory());
-
         Event savedEntity = eventRepository.save(event);
         return EventMapper.toFormDTO(savedEntity);
     }
@@ -277,25 +261,8 @@ public class EventService {
         }
         event.setId(id);
 
-        validateCategory(event.getCategory());
-
         Event updatedEntity = eventRepository.save(event);
         return EventMapper.toFormDTO(updatedEntity);
-    }
-
-    // Validierung
-    // Validierung: Kategorie (Exception-Handling umgesetzt)
-    private void validateCategory(String category) {
-        if (category == null || category.trim().isEmpty()) {
-            throw new IllegalArgumentException("Category cannot be null or empty");
-        }
-
-        List<String> validCategories = List.of("drought", "dustHaze", "earthquakes", "floods",
-                "landslides", "manmade", "seaLakeIce", "severeStorms",
-                "snow", "volcanoes", "waterColor", "wildfires");
-        if (!validCategories.contains(category)) {
-            throw new CategoryNotFoundException(category);
-        }
     }
 
 }

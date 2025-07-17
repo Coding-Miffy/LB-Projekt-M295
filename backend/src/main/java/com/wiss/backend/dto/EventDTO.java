@@ -1,5 +1,6 @@
 package com.wiss.backend.dto;
 
+import com.wiss.backend.model.EventCategory;
 import com.wiss.backend.model.EventStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
@@ -22,11 +23,9 @@ public class EventDTO {
     @Schema(description = "Datum des Events", example = "2025-07-01")
     private LocalDate date;
 
-    @NotBlank(message = "Kategorie darf nicht leer sein")
-    @Pattern(regexp = "wildfires|severeStorms|volcanoes|seaLakeIce|earthquakes|floods|landslides|snow|drought|dustHaze|manmade|waterColor",
-            message = "Ungültige Kategorie. Erlaubt sind: wildfires, severeStorms, volcanoes, seaLakeIce, earthquakes, floods, landslides, snow, drought, dustHaze, manmade, waterColor")
+    @NotNull(message = "Kategorie darf nicht leer sein")
     @Schema(description = "Kategorie des Events", example = "floods")
-    private String category;
+    private EventCategory category;
 
     @NotNull(message = "Längengrad darf nicht null sein")
     @DecimalMin(value = "-180.0", inclusive = true, message = "Längengrad muss >= -180.0 sein")
@@ -48,7 +47,7 @@ public class EventDTO {
     public EventDTO() {}
 
     // Vollständiger Konstruktor
-    public EventDTO(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, EventStatus status) {
+    public EventDTO(Long id, String title, LocalDate date, EventCategory category, Double longitude, Double latitude, EventStatus status) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -83,11 +82,11 @@ public class EventDTO {
         this.date = date;
     }
 
-    public String getCategory() {
+    public EventCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(EventCategory category) {
         this.category = category;
     }
 

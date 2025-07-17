@@ -1,5 +1,6 @@
 package com.wiss.backend.entity;
 
+import com.wiss.backend.model.EventCategory;
 import com.wiss.backend.model.EventStatus;
 import jakarta.persistence.*;
 
@@ -20,8 +21,9 @@ public class Event {
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false, length = 50)
-    private String category;
+    private EventCategory category;
 
     @Column(name = "longitude", nullable = false, length = 50)
     private Double longitude;
@@ -37,7 +39,7 @@ public class Event {
     public Event() {}
 
     // Konstruktor ohne ID
-    public Event(String title, LocalDate date, String category, Double longitude, Double latitude, EventStatus status) {
+    public Event(String title, LocalDate date, EventCategory category, Double longitude, Double latitude, EventStatus status) {
         this.title = title;
         this.date = date;
         this.category = category;
@@ -47,7 +49,7 @@ public class Event {
     }
 
     // Konstruktor mit ID
-    public Event(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, EventStatus status) {
+    public Event(Long id, String title, LocalDate date, EventCategory category, Double longitude, Double latitude, EventStatus status) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -78,11 +80,11 @@ public class Event {
 
     public void setDate(LocalDate date) { this.date = date; }
 
-    public String getCategory() {
+    public EventCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(EventCategory category) {
         this.category = category;
     }
 

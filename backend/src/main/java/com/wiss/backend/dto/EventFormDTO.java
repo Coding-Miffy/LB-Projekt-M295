@@ -1,5 +1,7 @@
 package com.wiss.backend.dto;
 
+import com.wiss.backend.controller.EventController;
+import com.wiss.backend.model.EventStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
@@ -39,17 +41,15 @@ public class EventFormDTO {
     @Schema(description = "Breitengrad des Event-Standorts", example = "-6.21")
     private Double latitude;
 
-    @NotBlank(message = "Status ist erforderlich")
-    @Pattern(regexp = "open|closed", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Status muss 'open' oder 'closed' sein")
+    @NotNull(message = "Status ist erforderlich")
     @Schema(description = "Status des Events", example = "open")
-    private String status;
+    private EventStatus status;
 
     // Standard-Konstruktor für JSON-Deserialisierung.
-    public EventFormDTO() {
-    }
+    public EventFormDTO() {}
 
     // Vollständiger Konstruktor für das Erstellen eines EventFormDTO.
-    public EventFormDTO(String title, LocalDate date, String category, Double longitude, Double latitude, String status) {
+    public EventFormDTO(String title, LocalDate date, String category, Double longitude, Double latitude, EventStatus status) {
         this.title = title;
         this.date = date;
         this.category = category;
@@ -59,7 +59,7 @@ public class EventFormDTO {
     }
 
     // Vollständiger Konstruktor für das Bearbeiten eines EventFormDTO.
-    public EventFormDTO(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, String status) {
+    public EventFormDTO(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, EventStatus status) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -118,11 +118,11 @@ public class EventFormDTO {
         this.latitude = latitude;
     }
 
-    public String getStatus() {
+    public EventStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(EventStatus status) {
         this.status = status;
     }
 

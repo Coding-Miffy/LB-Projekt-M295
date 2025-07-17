@@ -1,5 +1,6 @@
 package com.wiss.backend.dto;
 
+import com.wiss.backend.model.EventStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
@@ -39,16 +40,15 @@ public class EventDTO {
     @Schema(description = "Breitengrad des Event-Standorts", example = "-6.21")
     private Double latitude;
 
-    @NotBlank(message = "Status darf nicht leer sein")
-    @Pattern(regexp = "open|closed", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Status muss 'open' oder 'closed' sein")
+    @NotNull(message = "Status darf nicht leer sein")
     @Schema(description = "Status des Events", example = "open")
-    private String status;
+    private EventStatus status;
 
     // Default Konstruktor (für JSON Deserialisierung)
     public EventDTO() {}
 
     // Vollständiger Konstruktor
-    public EventDTO(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, String status) {
+    public EventDTO(Long id, String title, LocalDate date, String category, Double longitude, Double latitude, EventStatus status) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -107,11 +107,11 @@ public class EventDTO {
         this.latitude = latitude;
     }
 
-    public String getStatus() {
+    public EventStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(EventStatus status) {
         this.status = status;
     }
 }

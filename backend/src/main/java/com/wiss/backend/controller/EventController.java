@@ -3,6 +3,7 @@ package com.wiss.backend.controller;
 import com.wiss.backend.dto.EventDTO;
 import com.wiss.backend.dto.EventFormDTO;
 import com.wiss.backend.entity.Event;
+import com.wiss.backend.model.EventStatus;
 import com.wiss.backend.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -77,7 +78,7 @@ public class EventController {
     @ApiResponse(responseCode = "400", description = "Ungültiger Status übergeben")
     public List<EventDTO> getEventsByStatus(
             @Parameter(description = "Status", example = "open", required = true)
-            @PathVariable String status) {
+            @PathVariable EventStatus status) {
         return eventService.getEventsByStatusAsDTO(status);
     }
 
@@ -156,7 +157,7 @@ public class EventController {
             @Parameter(description = "Kategorie", example = "wildfires")
             @RequestParam(required = false) String category,
             @Parameter(description = "Status", example = "open")
-            @RequestParam(required = false) String status,
+            @RequestParam(required = false) EventStatus status,
             @Parameter(description = "Startdatum", example = "2025-07-01")
             @RequestParam(required = false) LocalDate start,
             @Parameter(description = "Enddatum", example = "2025-07-15")
@@ -199,7 +200,7 @@ public class EventController {
     @ApiResponse(responseCode = "400", description = "Ungültige Kategorie übergeben")
     public long getEventCountByStatus(
             @Parameter(description = "Status", example = "open", required = true)
-            @PathVariable String status) {
+            @PathVariable EventStatus status) {
         return eventService.getTotalEventsByStatus(status);
     }
 

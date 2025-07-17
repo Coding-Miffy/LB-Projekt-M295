@@ -20,9 +20,9 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 ### User Stories
 [Einleitung]
 
-- **User Story 1**: [1]
-- **User Story 2**: [1]
-- **User Story 3**: [1]
+- **User Story 1**: [Hier kommt User Story 1](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/1)
+- **User Story 2**: [Hier kommt User Story 2](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/2)
+- **User Story 3**: [Hier kommt User Story 3](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/3)
 
 ### Use Case
 [Einleitung]

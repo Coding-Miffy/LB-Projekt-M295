@@ -77,6 +77,8 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 ### ChatGPT
 - Rechtschreibekorrektur und als Unterstützung beim Verfassen von Textabschnitten der Dokumentation.
 
+@PastOrPresent bei EventDTO
+
 ---
 >[!NOTE]
 >**Swagger**: http://localhost:8080/swagger-ui/index.html
@@ -89,6 +91,7 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 - Service: Date Validierung?
 - Sicherstellen: Alles zu Date komplett?
 - Stehen geblieben bei *6A*: Service anpassen
+- Deutsch statt Englisch
 
 ## Notizen:
 **Was muss die API können?**

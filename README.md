@@ -60,8 +60,16 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 
 [Anleitung]
 
-### Dokumentation
+## Dokumentation
 [Einleitung]
+
+### Swagger
+[Einleitung]  
+[Link]
+
+### JavaDoc
+[Einleitung]  
+[Link]
 
 ## Hilfestellungen
 [Einleitung Hilfestellungen]

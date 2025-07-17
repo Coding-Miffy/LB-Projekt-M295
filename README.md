@@ -1,11 +1,75 @@
 # Projektdokumentation
-**Modul**:  
-**Projektname**:  
-**Autor:in**:  
+**Modul**: 294   
+**Autor:in**: Natascha Blumer  
 **Datum**:  
 **Version**:  
 
+## Einleitung
+[Hier kommt Einleitung]
 
+## Projektidee
+Ich entwickle ein Backend für eine bestehende React-Frontend-Applikation (Modul 294), mit der Nutzer:innen aktuelle und vergangene Naturereignisse wie Waldbrände, Erdbeben oder Überschwemmungen entdecken und dokumentieren können.
+
+Das Backend stellt eine REST-API zur Verfügung, über welche autorisierte Benutzer:innen (z. B. Forscher:innen oder Behörden) neue Naturereignisse erfassen, bestehende aktualisieren oder nicht mehr relevante Einträge löschen können. Zusätzlich werden Filter- und Statistik-Endpunkte angeboten, um Ereignisse nach Datum, Kategorie oder Status auszuwerten. Die Daten werden persistent in einer PostgreSQL-Datenbank gespeichert.
+
+Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbare Datenbasis für globale Naturereignisse zu schaffen, die sich mit dem vorhandenen Frontend nahtlos kombinieren lässt. Dabei werden bewährte Technologien wie Spring Boot, Spring Data JPA, PostgreSQL und OpenAPI eingesetzt.
+
+## Anforderungsanalyse
+[Einleitung]
+
+### User Stories
+[Einleitung]
+
+- **User Story 1**: [1]
+- **User Story 2**: [1]
+- **User Story 3**: [1]
+
+### Use Case
+[Einleitung]
+[Diagramm]
+
+### Kernaufgaben
+[Einleitung]
+
+| ID | Funktionale Anforderungen |
+| :-: | :-- |
+| F1 |  |
+
+## Diagramm der Modell-Komponenten
+[WIP]
+
+## REST-Schnittstellen
+[WIP]
+
+## Testplan
+[Einleitung]
+
+### Testfälle
+| ID | Komponente / Datei | Testziel |
+| :-: | :-- | :-- |
+| T1 |  |  |
+
+## Durchführung der Tests
+[Einleitung]
+
+### T1 - Name
+[Durchführung des Tests]
+
+## Installationsanleitung
+[Einleitung]
+
+[Anleitung]
+
+### Dokumentation
+[Einleitung]
+
+## Hilfestellungen
+[Einleitung Hilfestellungen]
+
+### ChatGPT
+- Rechtschreibekorrektur und als Unterstützung beim Verfassen von Textabschnitten der Dokumentation.
+
+---
 >[!NOTE]
 >**Swagger**: http://localhost:8080/swagger-ui/index.html
 

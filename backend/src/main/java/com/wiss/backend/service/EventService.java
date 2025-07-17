@@ -4,6 +4,7 @@ import com.wiss.backend.dto.EventDTO;
 import com.wiss.backend.dto.EventFormDTO;
 import com.wiss.backend.entity.Event;
 import com.wiss.backend.exception.EventNotFoundException;
+import com.wiss.backend.exception.InvalidEventDataException;
 import com.wiss.backend.mapper.EventMapper;
 import com.wiss.backend.model.EventCategory;
 import com.wiss.backend.model.EventStatus;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Service
 public class EventService {
 
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
     // Konstruktor für Dependency Injection
     public EventService(EventRepository eventRepository) {
@@ -74,12 +75,8 @@ public class EventService {
             throw new IllegalArgumentException("ID cannot be null");
         }
 
-        Optional<Event> optionalEvent = eventRepository.findById(id);
-        if (optionalEvent.isEmpty()) {
-            throw new EventNotFoundException(id);
-        }
-
-        return optionalEvent.get();
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
     }
 
     // Events nach Kategorien filtern
@@ -106,17 +103,14 @@ public class EventService {
     // Neues Event erstellen
     public EventDTO createEvent(EventDTO dto) {
         // 1. Validierung
-        if (dto.getTitle() == null || dto.getTitle().trim().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or empty");
-        }
-
-        if (dto.getCategory() == null) {
-            throw new IllegalArgumentException("Category cannot be null");
-        }
-
-        if (dto.getStatus() == null) {
-            throw new IllegalArgumentException("Status cannot be null");
-        }
+        validateEventData(
+                dto.getTitle(),
+                dto.getDate(),
+                dto.getCategory(),
+                dto.getLongitude(),
+                dto.getLatitude(),
+                dto.getStatus()
+        );
 
         // 2. DTO zu Entity konvertieren
         Event entity = EventMapper.toEntity(dto);
@@ -134,6 +128,16 @@ public class EventService {
         if (!eventRepository.existsById(id)) {
             throw new EventNotFoundException(id);
         }
+
+        // Validieren
+        validateEventData(
+                dto.getTitle(),
+                dto.getDate(),
+                dto.getCategory(),
+                dto.getLongitude(),
+                dto.getLatitude(),
+                dto.getStatus()
+        );
 
         // 2. DTO zu Entity konvertieren und Id setzen
         Event entity = EventMapper.toEntity(dto);
@@ -248,6 +252,15 @@ public class EventService {
 
     // Neues Event erstellen
     public EventFormDTO createEventFromForm(Event event) {
+        validateEventData(
+                event.getTitle(),
+                event.getDate(),
+                event.getCategory(),
+                event.getLongitude(),
+                event.getLatitude(),
+                event.getStatus()
+        );
+
         Event savedEntity = eventRepository.save(event);
         return EventMapper.toFormDTO(savedEntity);
     }
@@ -259,8 +272,82 @@ public class EventService {
         }
         event.setId(id);
 
+        validateEventData(
+                event.getTitle(),
+                event.getDate(),
+                event.getCategory(),
+                event.getLongitude(),
+                event.getLatitude(),
+                event.getStatus()
+        );
+
         Event updatedEntity = eventRepository.save(event);
         return EventMapper.toFormDTO(updatedEntity);
+    }
+
+    // Validierung
+    // Titel validieren
+    private void validateTitle(String title) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
+    }
+
+    // Datum validieren
+    private void validateDate(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+
+        if (date.isAfter(LocalDate.now())) {
+            throw new InvalidEventDataException("Date cannot be in the future");
+        }
+    }
+
+    // Kategorie validieren
+    private void validateCategory(EventCategory category) {
+        if (category == null) {
+            throw new IllegalArgumentException("Category cannot be null");
+        }
+    }
+
+    // Longitude validieren
+    private void validateLongitude(Double longitude) {
+        if (longitude == null) {
+            throw new IllegalArgumentException("Longitude cannot be null");
+        }
+
+        if (longitude < -180 || longitude > 180) {
+            throw new InvalidEventDataException("Longitude must be between -180 and 180");
+        }
+    }
+
+    // Latitude validieren
+    private void validateLatitude(Double latitude) {
+        if (latitude == null) {
+            throw new IllegalArgumentException("Latitude cannot be null");
+        }
+
+        if (latitude < -90 || latitude > 90) {
+            throw new InvalidEventDataException("Latitude must be between -90 and 90");
+        }
+    }
+
+    // Status validieren
+    private void validateStatus(EventStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Status cannot be null");
+        }
+    }
+
+    // Hilfsmethode zur Validierung
+    private void validateEventData(String title, LocalDate date, EventCategory category, Double longitude, Double latitude, EventStatus status) {
+        validateTitle(title);
+        validateDate(date);
+        validateCategory(category);
+        validateLongitude(longitude);
+        validateLatitude(latitude);
+        validateStatus(status);
     }
 
 }

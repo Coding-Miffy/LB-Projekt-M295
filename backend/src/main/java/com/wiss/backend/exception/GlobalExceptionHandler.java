@@ -1,8 +1,10 @@
 package com.wiss.backend.exception;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.wiss.backend.dto.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -59,42 +61,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Behandelt CategoryNotFoundException und gibt 400 zurück.
-     */
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleCategoryNotFound(CategoryNotFoundException ex, WebRequest request) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
-                "INVALID_CATEGORY",
-                "Kategorie '" + ex.getCategory() + "' ist nicht gültig. " +
-                        "Gültige Kategorien: 'drought', 'dustHaze', 'earthquakes', " +
-                        "'floods', 'landslides', 'manmade', 'seaLakeIce', 'severeStorms', " +
-                        "'snow', 'volcanoes', 'waterColor', 'wildfires'",
-                400,
-                LocalDateTime.now(),
-                extractPath(request)
-        );
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    /**
-     * Behandelt StatusNotFoundException und gibt 400 zurück.
-     */
-    @ExceptionHandler(StatusNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handleStatusNotFound(StatusNotFoundException ex, WebRequest request) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
-                "INVALID_STATUS",
-                "Status '" + ex.getStatus() + "' ist nicht gültig. " +
-                        "Gültige Status: 'open', 'closed'",
-                400,
-                LocalDateTime.now(),
-                extractPath(request)
-        );
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    /**
      * Behandelt IllegalArgumentException und gibt 400 zurück.
      */
     @ExceptionHandler(IllegalArgumentException.class)
@@ -107,6 +73,49 @@ public class GlobalExceptionHandler {
                 extractPath(request)
         );
 
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    // Jackson-Exception
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponseDTO> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, WebRequest request) {
+        // Überprüfen, ob die Ursache eine InvalidFormatException ist (Enum-Fehler)
+        if (ex.getCause() instanceof InvalidFormatException cause) {
+            String fieldName = cause.getPath().get(0).getFieldName();
+            String invalidValue = cause.getValue().toString();
+
+            if ("category".equals(fieldName)) {
+                ErrorResponseDTO error = new ErrorResponseDTO(
+                        "INVALID_CATEGORY",
+                        "Kategorie '" + invalidValue + "' ist nicht gültig. " +
+                                "Gültige Kategorien: drought, dustHaze, earthquakes, floods, landslides, manmade, seaLakeIce, severeStorms, snow, volcanoes, waterColor, wildfires",
+                        400,
+                        LocalDateTime.now(),
+                        extractPath(request)
+                );
+                return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+            }
+
+            if ("status".equals(fieldName)) {
+                ErrorResponseDTO error = new ErrorResponseDTO(
+                        "INVALID_STATUS",
+                        "Status '" + invalidValue + "' ist nicht gültig. Erlaubt sind: open, closed.",
+                        400,
+                        LocalDateTime.now(),
+                        extractPath(request)
+                );
+                return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        // Fallback für andere Fälle
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                "MALFORMED_JSON",
+                "Die Anfrage konnte nicht gelesen werden: " + ex.getMessage(),
+                400,
+                LocalDateTime.now(),
+                extractPath(request)
+        );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

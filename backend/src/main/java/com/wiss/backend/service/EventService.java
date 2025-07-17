@@ -1,6 +1,7 @@
 package com.wiss.backend.service;
 
 import com.wiss.backend.dto.EventDTO;
+import com.wiss.backend.dto.EventFormDTO;
 import com.wiss.backend.entity.Event;
 import com.wiss.backend.exception.CategoryNotFoundException;
 import com.wiss.backend.exception.EventNotFoundException;
@@ -239,6 +240,48 @@ public class EventService {
     public List<EventDTO> getEventsByDateBetweenOrderByDateDesc(LocalDate start, LocalDate end) {
         List<Event> entities = eventRepository.findByDateBetweenOrderByDateDesc(start, end);
         return EventMapper.toDTOList(entities);
+    }
+
+    // Für Frontend-Endpoints
+    // Alle Events abrufen
+    public List<EventFormDTO> getAllEventsAsFormDTO() {
+        List<Event> entities = eventRepository.findAll();
+        return EventMapper.toFormDTOList(entities);
+    }
+
+    // Einzelnes Event abrufen
+    public EventFormDTO getEventByIdAsFormDTO(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+
+        if (!eventRepository.existsById(id)) {
+            throw new EventNotFoundException(id);
+        }
+
+        Event entity = getEventById(id);
+        return EventMapper.toFormDTO(entity);
+    }
+
+    // Neues Event erstellen
+    public EventFormDTO createEventFromForm(Event event) {
+        validateCategory(event.getCategory());
+        validateStatus(event.getStatus());
+        Event savedEntity = eventRepository.save(event);
+        return EventMapper.toFormDTO(savedEntity);
+    }
+
+    // Bestehendes Event editieren
+    public EventFormDTO updateEventFromForm(Long id, Event event) {
+        if (!eventRepository.existsById(id)) {
+            throw new EventNotFoundException(id);
+        }
+        event.setId(id);
+
+        validateCategory(event.getCategory());
+        validateStatus(event.getStatus());
+        Event updatedEntity = eventRepository.save(event);
+        return EventMapper.toFormDTO(updatedEntity);
     }
 
     // Validierung

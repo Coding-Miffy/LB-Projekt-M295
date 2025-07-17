@@ -1,13 +1,17 @@
 package com.wiss.backend.controller;
 
 import com.wiss.backend.dto.EventDTO;
+import com.wiss.backend.dto.EventFormDTO;
+import com.wiss.backend.entity.Event;
 import com.wiss.backend.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -214,5 +218,60 @@ public class EventController {
         return eventService.getTotalEventsByDateBetween(start, end);
     }
 
+    // Frontend Endpoints
+    @GetMapping("/all")
+    @Operation(
+            summary = "Alle Events abrufen",
+            description = "Gibt alle verfügbaren Events zurück"
+    )
+    @ApiResponse(responseCode = "200", description = "Events erfolgreich abgerufen")
+    public List<EventFormDTO> getAllFormEvents() {
+        return eventService.getAllEventsAsFormDTO();
+    }
+
+    @GetMapping("/{id}/edit")
+    @Operation(
+            summary = "Event nach ID abrufen über Formular",
+            description = "Gibt ein spezifisches Event anhand der ID zurück, optimiert für das Frontend-Formular"
+    )
+    @ApiResponse(responseCode = "200", description = "Event gefunden")
+    @ApiResponse(responseCode = "404", description = "Event nicht gefunden")
+    public EventFormDTO getEventByIdForEdit(
+            @Parameter(description = "ID des Events", example = "1", required = true)
+            @PathVariable Long id) {
+        return eventService.getEventByIdAsFormDTO(id);
+    }
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(
+            summary = "Neues Event erstellen über Formular",
+            description = "Erstellt ein neues EONET-Event über das Frontend-Formular"
+    )
+    @ApiResponse(responseCode = "201", description = "Event erfolgreich erstellt")
+    @ApiResponse(responseCode = "400", description = "Ungültige Daten übergeben")
+    @ApiResponse(responseCode = "500", description = "Unvollständige Daten übergeben")
+    public EventFormDTO createEventFromForm(
+            @Parameter(description = "Event-Daten", required = true)
+            @Valid @RequestBody Event event) {
+        return eventService.createEventFromForm(event);
+    }
+
+    @PutMapping("/{id}/update")
+    @Operation(
+            summary = "Event aktualisieren über Formular",
+            description = "Aktualisiert ein bestehendes Event über das Frontend-Formular"
+    )
+    @ApiResponse(responseCode = "200", description = "Event erfolgreich aktualisiert")
+    @ApiResponse(responseCode = "400", description = "Ungültige Daten übergeben")
+    @ApiResponse(responseCode = "404", description = "Event nicht gefunden")
+    @ApiResponse(responseCode = "500", description = "Unvollständige Daten übergeben")
+    public EventFormDTO updateEventFromForm(
+            @Parameter(description = "ID des Events", example = "1", required = true)
+            @PathVariable Long id,
+            @Parameter(description = "Event-Daten", required = true)
+            @Valid @RequestBody Event event) {
+        return eventService.updateEventFromForm(id, event);
+    }
 
 }

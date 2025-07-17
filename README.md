@@ -94,6 +94,7 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 - Stehen geblieben bei *6A*: Service anpassen
 - Deutsch statt Englisch
 - Controller/Swagger: API und Responses testen
+- 500er wenn daten unvollständig
 
 ## Notizen:
 **Was muss die API können?**

@@ -43,12 +43,14 @@ public class EventService {
 
     // Events nach Kategorien filtern
     public List<EventDTO> getEventsByCategoryAsDTO(String category) {
+        validateCategory(category);
         List<Event> entities = eventRepository.findByCategory(category);
         return EventMapper.toDTOList(entities);
     }
 
     // Events nach Status filtern
     public List<EventDTO> getEventsByStatusAsDTO(String status) {
+        validateStatus(status);
         List<Event> entities = eventRepository.findByStatus(status);
         return EventMapper.toDTOList(entities);
     }
@@ -117,6 +119,9 @@ public class EventService {
             throw new IllegalArgumentException("Status cannot be null or empty");
         }
 
+        validateCategory(dto.getCategory());
+        validateStatus(dto.getStatus());
+
         // 2. DTO zu Entity konvertieren
         Event entity = EventMapper.toEntity(dto);
 
@@ -138,6 +143,8 @@ public class EventService {
         Event entity = EventMapper.toEntity(dto);
         entity.setId(id); // <- Wichtig: id setzen für UPDATE-Erkennung
 
+        validateCategory(dto.getCategory());
+        validateStatus(dto.getStatus());
         // 3. Repository.save() aufrufen (erkennt automatisch UPDATE)
         Event updatedEntity = eventRepository.save(entity);
 

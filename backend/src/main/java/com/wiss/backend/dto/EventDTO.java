@@ -1,15 +1,30 @@
 package com.wiss.backend.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDate;
 
 public class EventDTO {
 
+    @Schema(description = "Eindeutige ID des Events", example = "1")
     private Long id;
+
+    @Schema(description = "Titel des Events", example = "Flood in Jakarta")
     private String title;
+
+    @Schema(description = "Datum des Events", example = "2025-07-01")
     private LocalDate date;
+
+    @Schema(description = "Kategorie des Events", example = "floods")
     private String category;
+
+    @Schema(description = "Längengrad des Event-Standorts", example = "106.85")
     private Double longitude;
+
+    @Schema(description = "Breitengrad des Event-Standorts", example = "-6.21")
     private Double latitude;
+
+    @Schema(description = "Status des Events", example = "open")
     private String status;
 
     // Default Konstruktor (für JSON Deserialisierung)

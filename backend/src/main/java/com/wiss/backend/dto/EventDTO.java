@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
+@Schema(description = "DTO für Events")
 public class EventDTO {
 
     @Schema(description = "Eindeutige ID des Events", example = "1")

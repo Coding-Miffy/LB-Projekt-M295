@@ -44,6 +44,32 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(FutureDateException.class)
+    public ResponseEntity<ErrorResponseDTO> handleFutureDate(FutureDateException ex, WebRequest request) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                "INVALID_DATE",
+                "Das Datum '" + ex.getDate() + "' liegt in der Zukunft und ist nicht erlaubt.",
+                400,
+                LocalDateTime.now(),
+                extractPath(request)
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CoordinateOutOfRangeException.class)
+    public ResponseEntity<ErrorResponseDTO> handleCoordinateOutOfRange(CoordinateOutOfRangeException ex, WebRequest request) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                "INVALID_COORDINATE",
+                "Ungültiger Wert für " + ex.getCoordinateType() + ": " + ex.getValue() +
+                        ". Erlaubte Werte: " +
+                        (ex.getCoordinateType().equals("latitude") ? "-90 bis 90" : "-180 bis 180"),
+                400,
+                LocalDateTime.now(),
+                extractPath(request)
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
     /**
      * Behandelt InvalidEventDataException und gibt 400 zurück.
      */

@@ -3,7 +3,9 @@ package com.wiss.backend.service;
 import com.wiss.backend.dto.EventDTO;
 import com.wiss.backend.dto.EventFormDTO;
 import com.wiss.backend.entity.Event;
+import com.wiss.backend.exception.CoordinateOutOfRangeException;
 import com.wiss.backend.exception.EventNotFoundException;
+import com.wiss.backend.exception.FutureDateException;
 import com.wiss.backend.exception.InvalidEventDataException;
 import com.wiss.backend.mapper.EventMapper;
 import com.wiss.backend.model.EventCategory;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EventService {
@@ -300,7 +301,7 @@ public class EventService {
         }
 
         if (date.isAfter(LocalDate.now())) {
-            throw new InvalidEventDataException("Date cannot be in the future");
+            throw new FutureDateException(date);
         }
     }
 
@@ -318,7 +319,7 @@ public class EventService {
         }
 
         if (longitude < -180 || longitude > 180) {
-            throw new InvalidEventDataException("Longitude must be between -180 and 180");
+            throw new CoordinateOutOfRangeException("longitude", longitude);
         }
     }
 
@@ -329,7 +330,7 @@ public class EventService {
         }
 
         if (latitude < -90 || latitude > 90) {
-            throw new InvalidEventDataException("Latitude must be between -90 and 90");
+            throw new CoordinateOutOfRangeException("latitude", latitude);
         }
     }
 

@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
                 "Kategorie '" + ex.getCategory() + "' ist nicht gültig. " +
                         "Gültige Kategorien: 'drought', 'dustHaze', 'earthquakes', " +
                         "'floods', 'landslides', 'manmade', 'seaLakeIce', 'severeStorms', " +
-                        "'snow', 'tempExtremes', 'volcanoes', 'waterColor', 'wildfires'",
+                        "'snow', 'volcanoes', 'waterColor', 'wildfires'",
                 400,
                 LocalDateTime.now(),
                 extractPath(request)

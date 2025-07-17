@@ -293,8 +293,8 @@ public class EventService {
 
         List<String> validCategories = List.of("drought", "dustHaze", "earthquakes", "floods",
                 "landslides", "manmade", "seaLakeIce", "severeStorms",
-                "snow", "tempExtremes", "volcanoes", "waterColor", "wildfires");
-        if (!validCategories.contains(category.toLowerCase())) {
+                "snow", "volcanoes", "waterColor", "wildfires");
+        if (!validCategories.contains(category)) {
             throw new CategoryNotFoundException(category);
         }
     }

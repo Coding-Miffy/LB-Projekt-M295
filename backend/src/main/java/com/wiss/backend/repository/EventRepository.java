@@ -28,5 +28,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     long countByCategory(EventCategory category);
     long countByStatus(EventStatus status);
     long countByDateBetween(LocalDate start, LocalDate end);
-
 }

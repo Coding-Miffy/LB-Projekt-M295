@@ -26,7 +26,7 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    // DTO-basierte Methoden
+    // DTO Methoden
     // Alle Events abrufen
     public List<EventDTO> getAllEventsAsDTO() {
         List<Event> entities = eventRepository.findAll();
@@ -61,8 +61,61 @@ public class EventService {
         return EventMapper.toDTOList(entities);
     }
 
+    // Für Frontend-Formular
+    // Alle Events abrufen
+    public List<EventFormDTO> getAllEventsAsFormDTO() {
+        List<Event> entities = eventRepository.findAll();
+        return EventMapper.toFormDTOList(entities);
+    }
 
-    // Weitere Methoden
+    // Einzelnes Event abrufen
+    public EventFormDTO getEventByIdAsFormDTO(Long id) {
+        validateId(id);
+
+        if (!eventRepository.existsById(id)) {
+            throw new EventNotFoundException(id);
+        }
+
+        Event entity = getEventById(id);
+        return EventMapper.toFormDTO(entity);
+    }
+
+    // Neues Event erstellen
+    public EventFormDTO createEventFromForm(Event event) {
+        validateEventData(
+                event.getTitle(),
+                event.getDate(),
+                event.getCategory(),
+                event.getLongitude(),
+                event.getLatitude(),
+                event.getStatus()
+        );
+
+        Event savedEntity = eventRepository.save(event);
+        return EventMapper.toFormDTO(savedEntity);
+    }
+
+    // Bestehendes Event editieren
+    public EventFormDTO updateEventFromForm(Long id, Event event) {
+        if (!eventRepository.existsById(id)) {
+            throw new EventNotFoundException(id);
+        }
+        event.setId(id);
+
+        validateEventData(
+                event.getTitle(),
+                event.getDate(),
+                event.getCategory(),
+                event.getLongitude(),
+                event.getLatitude(),
+                event.getStatus()
+        );
+
+        Event updatedEntity = eventRepository.save(event);
+        return EventMapper.toFormDTO(updatedEntity);
+    }
+
+    // Entity Methoden
     // Alle Events abrufen
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
@@ -97,6 +150,7 @@ public class EventService {
         return eventRepository.count();
     }
 
+    //CRUD
     // Neues Event erstellen
     public EventDTO createEvent(EventDTO dto) {
         // 1. Validierung
@@ -179,8 +233,6 @@ public class EventService {
 
     // Status + Startdatum + Enddatum
     public List<EventDTO> getEventsByStatusAndDateBetween(EventStatus status, LocalDate start, LocalDate end) {
-
-
         List<Event> entities = eventRepository.findByStatusAndDateBetween(status, start, end);
         return EventMapper.toDTOList(entities);
     }
@@ -198,67 +250,12 @@ public class EventService {
 
     // Anzahl nach Status
     public long getTotalEventsByStatus(EventStatus status) {
-
         return eventRepository.countByStatus(status);
     }
 
     // Anzahl nach Zeitraum
     public long getTotalEventsByDateBetween(LocalDate start, LocalDate end) {
         return eventRepository.countByDateBetween(start, end);
-    }
-
-    // Für Frontend-Endpoints
-    // Alle Events abrufen
-    public List<EventFormDTO> getAllEventsAsFormDTO() {
-        List<Event> entities = eventRepository.findAll();
-        return EventMapper.toFormDTOList(entities);
-    }
-
-    // Einzelnes Event abrufen
-    public EventFormDTO getEventByIdAsFormDTO(Long id) {
-        validateId(id);
-
-        if (!eventRepository.existsById(id)) {
-            throw new EventNotFoundException(id);
-        }
-
-        Event entity = getEventById(id);
-        return EventMapper.toFormDTO(entity);
-    }
-
-    // Neues Event erstellen
-    public EventFormDTO createEventFromForm(Event event) {
-        validateEventData(
-                event.getTitle(),
-                event.getDate(),
-                event.getCategory(),
-                event.getLongitude(),
-                event.getLatitude(),
-                event.getStatus()
-        );
-
-        Event savedEntity = eventRepository.save(event);
-        return EventMapper.toFormDTO(savedEntity);
-    }
-
-    // Bestehendes Event editieren
-    public EventFormDTO updateEventFromForm(Long id, Event event) {
-        if (!eventRepository.existsById(id)) {
-            throw new EventNotFoundException(id);
-        }
-        event.setId(id);
-
-        validateEventData(
-                event.getTitle(),
-                event.getDate(),
-                event.getCategory(),
-                event.getLongitude(),
-                event.getLatitude(),
-                event.getStatus()
-        );
-
-        Event updatedEntity = eventRepository.save(event);
-        return EventMapper.toFormDTO(updatedEntity);
     }
 
     // Validierung

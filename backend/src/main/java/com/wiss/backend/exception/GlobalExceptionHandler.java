@@ -123,26 +123,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Behandelt {@link IllegalArgumentException}, z. B. bei null-Werten.
-     *
-     * @param ex Die ausgelöste IllegalArgumentException.
-     * @param request Der zugehörige HTTP-Request.
-     * @return Strukturierte Fehlerantwort mit HTTP-Status 400 (Bad Request).
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponseDTO> handleIllegalArgument(IllegalArgumentException ex, WebRequest request) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
-                "INVALID_INPUT",
-                ex.getMessage(),
-                400,
-                LocalDateTime.now(),
-                extractPath(request)
-        );
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    /**
      * Behandelt {@link HttpMessageNotReadableException}, z. B. bei ungültigem JSON.
      * Prüft speziell auf ungültige Enum-Werte (Kategorie, Status).
      *

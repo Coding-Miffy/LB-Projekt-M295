@@ -35,9 +35,7 @@ public class EventService {
 
     // Ein spezifisches Event finden (Exception-Handling umgesetzt)
     public EventDTO getEventByIdAsDTO(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID cannot be null");
-        }
+        validateId(id);
 
         Event entity = eventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFoundException(id));
@@ -72,9 +70,7 @@ public class EventService {
 
     // Ein spezifisches Event finden (Exception-Handling umgesetzt)
     public Event getEventById(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID cannot be null");
-        }
+        validateId(id);
 
         return eventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFoundException(id));
@@ -211,25 +207,6 @@ public class EventService {
         return eventRepository.countByDateBetween(start, end);
     }
 
-    // Nach Kategorie, geordnet nach Datum
-    public List<EventDTO> getEventsByCategoryOrderByDateDesc(EventCategory category) {
-        List<Event> entities = eventRepository.findByCategoryOrderByDateDesc(category);
-        return EventMapper.toDTOList(entities);
-    }
-
-    // Nach Status, geordnet nach Datum
-    public List<EventDTO> getEventsByStatusOrderByDateDesc(EventStatus status) {
-
-        List<Event> entities = eventRepository.findByStatusOrderByDateDesc(status);
-        return EventMapper.toDTOList(entities);
-    }
-
-    // Nach Datum, geordnet nach Datum
-    public List<EventDTO> getEventsByDateBetweenOrderByDateDesc(LocalDate start, LocalDate end) {
-        List<Event> entities = eventRepository.findByDateBetweenOrderByDateDesc(start, end);
-        return EventMapper.toDTOList(entities);
-    }
-
     // Für Frontend-Endpoints
     // Alle Events abrufen
     public List<EventFormDTO> getAllEventsAsFormDTO() {
@@ -239,9 +216,7 @@ public class EventService {
 
     // Einzelnes Event abrufen
     public EventFormDTO getEventByIdAsFormDTO(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be null");
-        }
+        validateId(id);
 
         if (!eventRepository.existsById(id)) {
             throw new EventNotFoundException(id);
@@ -287,17 +262,23 @@ public class EventService {
     }
 
     // Validierung
+    // ID validieren
+    private void validateId(Long id) {
+        if (id == null) {
+            throw new InvalidEventDataException("ID darf nicht null sein.");
+        }
+    }
     // Titel validieren
     private void validateTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or empty");
+            throw new InvalidEventDataException("Titel darf nicht null oder leer sein.");
         }
     }
 
     // Datum validieren
     private void validateDate(LocalDate date) {
         if (date == null) {
-            throw new IllegalArgumentException("Date cannot be null");
+            throw new InvalidEventDataException("Datum darf nicht null sein.");
         }
 
         if (date.isAfter(LocalDate.now())) {
@@ -308,14 +289,14 @@ public class EventService {
     // Kategorie validieren
     private void validateCategory(EventCategory category) {
         if (category == null) {
-            throw new IllegalArgumentException("Category cannot be null");
+            throw new InvalidEventDataException("Kategorie darf nicht null sein.");
         }
     }
 
     // Longitude validieren
     private void validateLongitude(Double longitude) {
         if (longitude == null) {
-            throw new IllegalArgumentException("Longitude cannot be null");
+            throw new InvalidEventDataException("Longitude darf nicht null sein.");
         }
 
         if (longitude < -180 || longitude > 180) {
@@ -326,7 +307,7 @@ public class EventService {
     // Latitude validieren
     private void validateLatitude(Double latitude) {
         if (latitude == null) {
-            throw new IllegalArgumentException("Latitude cannot be null");
+            throw new InvalidEventDataException("Latitude darf nicht null sein.");
         }
 
         if (latitude < -90 || latitude > 90) {
@@ -337,7 +318,7 @@ public class EventService {
     // Status validieren
     private void validateStatus(EventStatus status) {
         if (status == null) {
-            throw new IllegalArgumentException("Status cannot be null");
+            throw new InvalidEventDataException("Status darf nicht null sein.");
         }
     }
 

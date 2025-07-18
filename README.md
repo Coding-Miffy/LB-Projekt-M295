@@ -97,6 +97,14 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 - Controller/Swagger: API und Responses testen
 - 500er wenn daten unvollständig
 
+## JavaDoc abgeschlossen:
+Ganzes Verzeichnis 'exception':
+- GlobalExceptionHandler
+- CoordinateOutOfRangeException
+- EventNotFoundException
+- FutureDateException
+- InvalidEventDataException
+
 ## Notizen:
 **Was muss die API können?**
 - Anzahl N an open Events einer Kategorie mit Koordinaten (Filter: Anzahl N, Kategorie, open)

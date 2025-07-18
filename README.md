@@ -92,9 +92,21 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 - Service (und vlt mehr): Longitude/Latitude Validierung
 - Sicherstellen: Alles zu Date komplett?
 - Stehen geblieben bei *6A*: Service anpassen
-- Deutsch statt Englisch
+- Frontend: Englisch
+- Backend: Deutsch
 - Controller/Swagger: API und Responses testen
 - 500er wenn daten unvollständig
+
+## JavaDoc abgeschlossen:
+Verzeichnis 'exception': **komplett**
+- GlobalExceptionHandler
+- CoordinateOutOfRangeException
+- EventNotFoundException
+- FutureDateException
+- InvalidEventDataException
+
+Verzeichnis 'dto':
+- ErrorResponseDTO
 
 ## Notizen:
 **Was muss die API können?**

@@ -92,7 +92,7 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 - Service (und vlt mehr): Longitude/Latitude Validierung
 - Sicherstellen: Alles zu Date komplett?
 - Stehen geblieben bei *6A*: Service anpassen
-- Deutsch statt Englisch
+- Englisch statt Deutsch
 - Controller/Swagger: API und Responses testen
 - 500er wenn daten unvollständig
 

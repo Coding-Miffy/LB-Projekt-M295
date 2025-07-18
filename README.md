@@ -111,10 +111,6 @@ Verzeichnis 'exception': **komplett**
 - InvalidEventDataException
 - package info
 
-Verzeichnis 'dto':  
-[] package info?
-- ErrorResponseDTO
-
 Verzeichnis 'config': **komplett**  
 - SwaggerConfig
 - WebConfig
@@ -128,6 +124,29 @@ Verzeichnis 'model': **komplett**
 - EventCategory
 - EventStatus
 - package info
+
+Verzeichnis 'dto':  
+[] package info?
+- ErrorResponseDTO
+
+Verzeichnis 'controller':
+
+Verzeichnis 'mapper':
+
+Verzeichnis 'repository':
+
+Verzeichnis 'service':
+
+Verzeichnis 'com.wiss.backend' (inkl. Application):
+
+**test**  
+Verzeichnis 'com.wiss.backend' (inkl. Application):
+
+Verzeichnis 'controller':
+
+Verzeichnis 'repository':
+
+Verzeichnis 'service':
 
 ## Notizen:
 **Was muss die API können?**

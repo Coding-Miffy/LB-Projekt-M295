@@ -3,27 +3,66 @@ package com.wiss.backend.dto;
 import java.time.LocalDateTime;
 
 /**
- * Standardisierte Error-Response für alle API-Felder.
+ * <h2>
+ *     ErrorResponseDTO
+ * </h2>
+ * <p>
+ *     Repräsentiert eine standardisierte Fehlerantwort für alle REST-Endpunkte.
+ *     Dieses Objekt wird vom {@link com.wiss.backend.exception.GlobalExceptionHandler}
+ *     verwendet und zurückgegeben, um dem Client strukturierte und einheitliche Fehlermeldungen zu liefern.
+ * </p>
  *
- * Bietet konsistente Struktur für Frontend Error-Handling.
+ * <h3>
+ *     Verwendung:
+ * </h3>
+ * <ul>
+ *   <li>Als Antwort auf validierungs- oder logikbedingte Fehler (400)</li>
+ *   <li>Bei nicht gefundenen Ressourcen (404)</li>
+ *   <li>Bei technischen oder unbekannten Fehlern (500)</li>
+ * </ul>
+ *
+ * @author Natascha Blumer
+ * @version 1.0
+ * @since 2025-07-18
+ * @see com.wiss.backend.exception.GlobalExceptionHandler
  */
 public class ErrorResponseDTO {
 
+    /**
+     * Kurzcode zur maschinenlesbaren Beschreibung des Fehlertyps
+     * (z. B. {@code "EVENT_NOT_FOUND"}, {@code "INVALID_INPUT"}, {@code "INTERNAL_SERVER_ERROR"}).
+     */
     private String error;
+
+    /**
+     * Menschlich lesbare Fehlermeldung, geeignet für Anzeige im Frontend.
+     */
     private String message;
+
+    /**
+     * HTTP-Statuscode, der den Typ des Fehlers beschreibt (z. B. 400, 404, 500).
+     */
     private int code;
+
+    /**
+     * Zeitstempel des Fehlers (z. B. gesetzt mit {@link java.time.LocalDateTime#now()}).
+     */
     private LocalDateTime timestamp;
+
+    /**
+     * Der URI-Pfad der fehlerhaften Anfrage (z. B. "/api/events/42").
+     */
     private String path;
 
     /**
-     * Erstellt eine neue Error-Response.
+     * Konstruktor zur Initialisierung aller Felder.
      *
-     * @param error Error-Code (z. B. "EVENT_NOT_FOUND")
-     * @param message Benutzerfreundliche Fehlermeldung
-     * @param code HTTP Status-Code
-     * @param path Der aufgerufene API-Pfad
+     * @param error Kurzcode für den Fehlertyp.
+     * @param message Benutzerfreundliche Fehlermeldung.
+     * @param code HTTP-Statuscode.
+     * @param timestamp Zeitpunkt des Fehlers.
+     * @param path API-Pfad der fehlerhaften Anfrage.
      */
-
     public ErrorResponseDTO(String error, String message, int code, LocalDateTime timestamp, String path) {
         this.error = error;
         this.message = message;
@@ -33,7 +72,6 @@ public class ErrorResponseDTO {
     }
 
     // Getter & Setter
-
     public String getError() {
         return error;
     }

@@ -16,26 +16,43 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Globaler Exception-Handler, der alle unbehandelten Exceptions abfängt
- * und in strukturierte Error-Responses konvertiert.
+ * <h2>
+ *     GlobalExceptionHandler
+ * </h2>
+ * <p>
+ *     Zentraler Exception-Handler für alle REST-Controller.
+ *     Alle auftretenden Fehler werden hier zu strukturierten JSON-Fehlermeldungen
+ *     umgewandelt, die dem Client eine klare und einheitliche Rückmeldung geben.
+ * </p>
+ * <p>
+ *     Die Klasse ist mit {@code @ControllerAdvice} annotiert, wodurch sie alle
+ *     Exceptions in Controllern global abfangen kann.
+ * </p>
+ * <p>
+ *     Die Rückgaben erfolgen im Format {@link ErrorResponseDTO}, inklusive Statuscode,
+ *     Fehlertyp, Nachricht, Zeitstempel und URI-Pfad.
+ * </p>
  *
- * @ControllerAdvice macht diese Klasse zu einem globalen Exception-Interceptor.
+ * @author Natascha Blumer
+ * @version 1.0
+ * @since 2025-07-18
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
-     * Behandelt EventNotFoundException und gibt 404 zurück.
+     * Behandelt {@link EventNotFoundException}, wenn ein Event mit der
+     * angegebenen ID nicht existiert.
      *
-     * @param ex Die gefangene Exception
-     * @param request Der ursprüngliche HTTP-Request
-     * @return 404-Response mit strukturierter Fehlermeldung
+     * @param ex Die ausgelöste EventNotFoundException.
+     * @param request Der zugehörige HTTP-Request.
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 404 (Not Found).
      */
     @ExceptionHandler(EventNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleEventNotFound(EventNotFoundException ex, WebRequest request) {
         ErrorResponseDTO error = new ErrorResponseDTO(
                 "EVENT_NOT_FOUND",
-                "Event mit ID " + ex.getEventId() + " wurde nicht gefunden",
+                ex.getMessage(),
                 404,
                 LocalDateTime.now(),
                 extractPath(request)
@@ -44,25 +61,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Behandelt {@link FutureDateException}, wenn ein Event-Datum
+     * in der Zukunft liegt.
+     *
+     * @param ex Die ausgelöste FutureDateException.
+     * @param request Der zugehörige HTTP-Request.
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 400 (Bad Request).
+     */
     @ExceptionHandler(FutureDateException.class)
     public ResponseEntity<ErrorResponseDTO> handleFutureDate(FutureDateException ex, WebRequest request) {
         ErrorResponseDTO error = new ErrorResponseDTO(
                 "INVALID_DATE",
-                "Das Datum '" + ex.getDate() + "' liegt in der Zukunft und ist nicht erlaubt.",
-                400,
-                LocalDateTime.now(),
-                extractPath(request)
-        );
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(CoordinateOutOfRangeException.class)
-    public ResponseEntity<ErrorResponseDTO> handleCoordinateOutOfRange(CoordinateOutOfRangeException ex, WebRequest request) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
-                "INVALID_COORDINATE",
-                "Ungültiger Wert für " + ex.getCoordinateType() + ": " + ex.getValue() +
-                        ". Erlaubte Werte: " +
-                        (ex.getCoordinateType().equals("latitude") ? "-90 bis 90" : "-180 bis 180"),
+                ex.getMessage(),
                 400,
                 LocalDateTime.now(),
                 extractPath(request)
@@ -71,7 +82,32 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Behandelt InvalidEventDataException und gibt 400 zurück.
+     * Behandelt {@link CoordinateOutOfRangeException}, wenn eine Koordinate
+     * ausserhalb des gültigen Wertebereichs liegt.
+     *
+     * @param ex Die ausgelöste CoordinateOutOfRangeException.
+     * @param request Der zugehörige HTTP-Request.
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 400 (Bad Request).
+     */
+    @ExceptionHandler(CoordinateOutOfRangeException.class)
+    public ResponseEntity<ErrorResponseDTO> handleCoordinateOutOfRange(CoordinateOutOfRangeException ex, WebRequest request) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                "INVALID_COORDINATE",
+                ex.getMessage(),
+                400,
+                LocalDateTime.now(),
+                extractPath(request)
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Behandelt {@link InvalidEventDataException}, wenn Business-Logik-Regeln verletzt werden,
+     * die nicht bereits durch Bean Validation abgedeckt sind.
+     *
+     * @param ex Die ausgelöste InvalidEventDataException.
+     * @param request Der zugehörige HTTP-Request.
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 400 (Bad Request).
      */
     @ExceptionHandler(InvalidEventDataException.class)
     public ResponseEntity<ErrorResponseDTO> handleInvalidEventData(InvalidEventDataException ex, WebRequest request) {
@@ -87,7 +123,11 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Behandelt IllegalArgumentException und gibt 400 zurück.
+     * Behandelt {@link IllegalArgumentException}, z. B. bei null-Werten.
+     *
+     * @param ex Die ausgelöste IllegalArgumentException.
+     * @param request Der zugehörige HTTP-Request.
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 400 (Bad Request).
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponseDTO> handleIllegalArgument(IllegalArgumentException ex, WebRequest request) {
@@ -102,12 +142,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    // Jackson-Exception
+    /**
+     * Behandelt {@link HttpMessageNotReadableException}, z. B. bei ungültigem JSON.
+     * Prüft speziell auf ungültige Enum-Werte (Kategorie, Status).
+     *
+     * @param ex Die ausgelöste HttpMessageNotReadableException.
+     * @param request Der zugehörige HTTP-Request.
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 400 (Bad Request).
+     */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDTO> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, WebRequest request) {
         // Überprüfen, ob die Ursache eine InvalidFormatException ist (Enum-Fehler)
         if (ex.getCause() instanceof InvalidFormatException cause) {
-            String fieldName = cause.getPath().get(0).getFieldName();
+            String fieldName = cause.getPath().getFirst().getFieldName();
             String invalidValue = cause.getValue().toString();
 
             if ("category".equals(fieldName)) {
@@ -134,7 +181,7 @@ public class GlobalExceptionHandler {
             }
         }
 
-        // Fallback für andere Fälle
+        // Allgemeiner Fallback
         ErrorResponseDTO error = new ErrorResponseDTO(
                 "MALFORMED_JSON",
                 "Die Anfrage konnte nicht gelesen werden: " + ex.getMessage(),
@@ -146,13 +193,50 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Fallback für alle anderen Exceptions - gibt 500 zurück.
+     * Behandelt Validierungsfehler von {@code @Valid}-annotierten Feldern.
+     * Gibt pro Feld die konkrete Fehlermeldung zurück.
      *
-     * Wichtig: Keine technischen Details preisgeben!
+     * @param ex Die ausgelöste MethodArgumentNotValidException mit Details zu allen fehlgeschlagenen Validierungen.
+     * @param request Der ursprüngliche HTTP-Request
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 400 (Bad Request) und detaillierten Validierungsfehlern.
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidationException(MethodArgumentNotValidException ex, WebRequest request) {
+        // Sammelt alle Validierungsfehler
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+
+        // Erstellt benutzerfreundliche Fehlermeldung
+        StringBuilder message = new StringBuilder("Validation exception: ");
+        errors.forEach((field, error) -> message.append(field)
+                .append(" - ").append(error).append("; "));
+
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                "VALIDATION_ERROR",
+                message.toString(),
+                400,
+                LocalDateTime.now(),
+                extractPath(request)
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Fängt alle nicht explizit behandelten Exceptions ab.
+     * Gibt eine 500-Fehlermeldung ohne technische Details zurück.
+     *
+     * @param ex Die ausgelöste sonstige Exception.
+     * @param request Der zugehörige HTTP-Request.
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 500 (Internal Server Error).
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGeneralException(Exception ex, WebRequest request) {
-        // Log the actual exception for debugging (nicht an Frontend senden!)
+        // Internes Logging
         System.err.println("Unhandled exception: " + ex.getMessage());
         ex.printStackTrace();
 
@@ -168,42 +252,13 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Extrahiert den API-Pfad aus dem WebRequest.
+     * Extrahiert den URI-Pfad aus dem {@link WebRequest}, z. B. "/api/events/3".
+     * Entfernt dabei das Standardpräfix "uri=".
+     *
+     * @param request Der HTTP-Request.
+     * @return Der URI-Pfad der Anfrage.
      */
     private String extractPath(WebRequest request) {
         return request.getDescription(false).replace("uri=", "");
-    }
-
-    /**
-     * Behandelt Bean Validation Errors von @Valid Annotations.
-     *
-     * @param ex Die Validation-Exception mit Details zu allen fehlgeschlagenen Validierungen
-     * @param request Der ursprüngliche HTTP-Request
-     * @return 400 Response mit detaillierten Validierungsfehlern
-     */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationException(MethodArgumentNotValidException ex, WebRequest request) {
-        // Sammle alle Validierungsfehler
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-
-        // Erstelle benutzerfreundliche Fehlermeldung
-        StringBuilder message = new StringBuilder("Validation exception: ");
-        errors.forEach((field, error) -> message.append(field)
-                .append(" - ").append(error).append("; "));
-
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                "VALIDATION_ERROR",
-                message.toString(),
-                400,
-                LocalDateTime.now(),
-                extractPath(request)
-        );
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

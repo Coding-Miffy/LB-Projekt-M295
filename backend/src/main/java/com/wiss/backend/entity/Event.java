@@ -5,40 +5,94 @@ import com.wiss.backend.model.EventStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
+/**
+ * <h2>
+ *     Entity-Klasse zur Repräsentation von Naturereignissen
+ * </h2>
+ * <p>
+ *     Diese Klasse repräsentiert ein Event (Naturereignis) und wird von JPA/Hibernate verwendet,
+ *     um die gleichnamige Datenbanktabelle <code>events</code> zu verwalten.
+ * </p>
+ *
+ * <p>
+ *     Ein Event besteht aus Metadaten wie Titel, Datum, Kategorie, geografischen Koordinaten und Status.
+ * </p>
+ *
+ * @author Natascha Blumer
+ * @version 1.0
+ * @since 2025-07-18
+ *
+ * @see EventCategory Enum mit allen unterstützten Naturereignis-Kategorien
+ * @see EventStatus Enum mit allen gültigen Statuswerte für ein Naturereignis
+ */
 @Entity
 @Table(name = "events")
 public class Event {
 
-    @Id // <- Primary Key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // <- PostgreSQL macht Auto-Increment
+    /**
+     * Eindeutige ID des Events (Primary Key).
+     * Wird automatisch von der Datenbank generiert.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Titel des Events (z. B. "Erdbeben in Japan").
+     */
     @Column(name = "title", nullable = false)
     private String title;
 
+    /**
+     * Datum, an dem das Event stattgefunden bzw. begonnen hat.
+     */
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
+    /**
+     * Kategorie des Events (z. B. <code>floods</code>, <code>volcanoes</code>).
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false, length = 50)
     private EventCategory category;
 
+    /**
+     * Längengrad des Ereignis-Standorts.
+     * Erwarteter Wertebereich: -180 bis 180.
+     */
     @Column(name = "longitude", nullable = false, length = 50)
     private Double longitude;
 
+    /**
+     * Breitengrad des Ereignis-Standorts.
+     * Erwarteter Wertebereich: -90 bis 90.
+     */
     @Column(name = "latitude", nullable = false, length = 50)
     private Double latitude;
 
+    /**
+     * Status des Events (offen oder abgeschlossen).
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
     private EventStatus status;
 
-    // Default Konstruktor
+    /**
+     * Leerer Standard-Konstruktor (für JPA erforderlich).
+     */
     public Event() {}
 
-    // Konstruktor ohne ID
+    /**
+     * Konstruktor zum Erstellen eines neuen Events ohne ID.
+     *
+     * @param title     Titel des Events.
+     * @param date      Datum des Events.
+     * @param category  Kategorie (z. B. floods, drought).
+     * @param longitude Längengrad.
+     * @param latitude  Breitengrad.
+     * @param status    Status (open/closed).
+     */
     public Event(String title, LocalDate date, EventCategory category, Double longitude, Double latitude, EventStatus status) {
         this.title = title;
         this.date = date;
@@ -48,7 +102,17 @@ public class Event {
         this.status = status;
     }
 
-    // Konstruktor mit ID
+    /**
+     * Konstruktor zum Erstellen eines vollständigen Event-Objekts inkl. ID (z. B. bei Updates).
+     *
+     * @param id        Eindeutige ID des Events.
+     * @param title     Titel des Events.
+     * @param date      Datum des Events.
+     * @param category  Kategorie (z. B. floods, drought).
+     * @param longitude Längengrad.
+     * @param latitude  Breitengrad.
+     * @param status    Status (open/closed).
+     */
     public Event(Long id, String title, LocalDate date, EventCategory category, Double longitude, Double latitude, EventStatus status) {
         this.id = id;
         this.title = title;
@@ -111,5 +175,4 @@ public class Event {
     public void setStatus(EventStatus status) {
         this.status = status;
     }
-
 }

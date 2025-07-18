@@ -49,6 +49,8 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 | :-: | :-- | :-- |
 | T1 | `EventService` | Sicherstellen, dass `EventService.getAllEvents()` alle Events aus dem Repository korrekt abruft und zurückliefert |
 | T2 | `EventService` | Sicherstellen, dass ein `Event` korrekt in ein `EventDTO` konvertiert wird |
+| T3 | `EventRepository` | Sicherstellen, dass ein gespeichertes Event erfolgreich per `findById()` abgerufen werden kann |
+| T4 | `EventRepository` | Sicherstellen, dass die Methode `findByCategory()` nur Events mit der gewünschten Kategorie zurückgibt |
 
 ## Durchführung der Tests
 [Einleitung]

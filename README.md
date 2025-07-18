@@ -99,12 +99,12 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 
 ## JavaDoc abgeschlossen:
 Verzeichnis 'exception': **komplett**  
-[] package info?
 - GlobalExceptionHandler
 - CoordinateOutOfRangeException
 - EventNotFoundException
 - FutureDateException
 - InvalidEventDataException
+- package info
 
 Verzeichnis 'dto':  
 [] package info?

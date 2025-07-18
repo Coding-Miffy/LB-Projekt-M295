@@ -98,15 +98,22 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 - 500er wenn daten unvollständig
 
 ## JavaDoc abgeschlossen:
-Verzeichnis 'exception': **komplett**
+Verzeichnis 'exception': **komplett**  
+[] package info?
 - GlobalExceptionHandler
 - CoordinateOutOfRangeException
 - EventNotFoundException
 - FutureDateException
 - InvalidEventDataException
 
-Verzeichnis 'dto':
+Verzeichnis 'dto':  
+[] package info?
 - ErrorResponseDTO
+
+Verzeichnis 'config': **komplett**  
+[] package info?
+- SwaggerConfig
+- WebConfig
 
 ## Notizen:
 **Was muss die API können?**

@@ -115,6 +115,10 @@ Verzeichnis 'config': **komplett**
 - WebConfig
 - package info
 
+Verzeichnis 'entity': **komplett**  
+- Event
+- package info
+
 ## Notizen:
 **Was muss die API können?**
 - Anzahl N an open Events einer Kategorie mit Koordinaten (Filter: Anzahl N, Kategorie, open)

@@ -111,9 +111,9 @@ Verzeichnis 'dto':
 - ErrorResponseDTO
 
 Verzeichnis 'config': **komplett**  
-[] package info?
 - SwaggerConfig
 - WebConfig
+- package info
 
 ## Notizen:
 **Was muss die API können?**

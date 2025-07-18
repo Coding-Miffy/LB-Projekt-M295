@@ -45,9 +45,10 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 [Einleitung]
 
 ### Testfälle
-| ID | Komponente / Datei | Testziel |
+| ID | Klasse | Testziel |
 | :-: | :-- | :-- |
-| T1 |  |  |
+| T1 | `EventService` | Sicherstellen, dass `EventService.getAllEvents()` alle Events aus dem Repository korrekt abruft und zurückliefert |
+| T2 | `EventService` | Sicherstellen, dass ein `Event` korrekt in ein `EventDTO` konvertiert wird |
 
 ## Durchführung der Tests
 [Einleitung]

@@ -20,13 +20,15 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 ### User Stories
 [Einleitung]
 
-- **User Story 1**: [Hier kommt User Story 1](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/1)
-- **User Story 2**: [Hier kommt User Story 2](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/2)
-- **User Story 3**: [Hier kommt User Story 3](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/3)
+- **User Story 1**: [Naturereignisse erfassen](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/1)
+- **User Story 2**: [Naturereignisse filtern](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/2)
+- **User Story 3**: [Naturereignisse bearbeiten oder löschen](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/3)
 
 ### Use Case
-[Einleitung]
-[Diagramm]
+Das folgende Use-Case-Diagramm veranschaulicht die Interaktion verschiedener Benutzerrollen mit der EONET REST API.
+Zwei Akteur:innen – `Forscher:in` und `Benutzer:in` – führen jeweils spezifische Aktionen durch. Gemeinsam genutzte Teilfunktionalitäten (z. B. Eingabevalidierung oder Filterung) sind als `include`-Beziehungen dargestellt.
+
+![Use Case Diagramm](/resources/usecase-diagram.jpg)
 
 ### Kernaufgaben
 [Einleitung]

@@ -10,7 +10,7 @@
  * </p>
  *
  * <h3>
- *     Enthaltene Komponenten
+ *     Enthaltene Komponenten:
  * </h3>
  * <ul>
  *     <li>{@link com.wiss.backend.exception.EventNotFoundException} – Wird geworfen, wenn ein Event mit der angegebenen ID nicht gefunden wurde (HTTP 404).</li>

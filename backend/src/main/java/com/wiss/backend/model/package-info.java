@@ -10,7 +10,7 @@
  * </p>
  *
  * <h3>
- *     Enthaltene Komponenten
+ *     Enthaltene Komponenten:
  * </h3>
  * <ul>
  *     <li>{@link com.wiss.backend.model.EventCategory} – Definiert die Kategorie eines Naturereignisses

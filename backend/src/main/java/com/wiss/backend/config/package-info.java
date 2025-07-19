@@ -10,7 +10,7 @@
  * </p>
  *
  * <h3>
- *     Enthaltene Komponenten
+ *     Enthaltene Komponenten:
  * </h3>
  * <ul>
  *     <li>{@link com.wiss.backend.config.SwaggerConfig} – Konfiguration der OpenAPI/Swagger-Dokumentation für die REST-API.</li>

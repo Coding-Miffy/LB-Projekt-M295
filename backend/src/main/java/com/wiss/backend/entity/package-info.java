@@ -13,7 +13,7 @@
  * </p>
  *
  * <h3>
- *     Enthaltene Komponenten
+ *     Enthaltene Komponenten:
  * </h3>
  * <ul>
  *     <li>{@link com.wiss.backend.entity.Event} – Entity-Klasse zur Abbildung eines

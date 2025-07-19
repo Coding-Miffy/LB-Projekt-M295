@@ -17,6 +17,38 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+/**
+ * <h2>
+ *     Unit-Tests für den {@link EventService}
+ * </h2>
+ *
+ * <p>
+ *     Diese Testklasse prüft die Kernfunktionalität des {@link EventService} mithilfe von Mockito.
+ *     Der {@link EventRepository} wird dabei als Mock verwendet, um den Service isoliert zu testen.
+ * </p>
+ *
+ * <h3>
+ *     Getestete Methoden:
+ * </h3>
+ * <ul>
+ *     <li>{@link EventService#getAllEvents()}</li>
+ *     <li>{@link EventService#getAllEventsAsDTO()}</li>
+ * </ul>
+ *
+ * <h3>
+ *     Verwendete Testwerkzeuge:
+ * </h3>
+ * <ul>
+ *     <li>{@code @ExtendWith(MockitoExtension.class)} für Mockito-Integration</li>
+ *     <li>{@code @Mock} und {@code @InjectMocks} zur Simulation abhängiger Komponenten</li>
+ * </ul>
+ *
+ * @author Natascha Blumer
+ * @version 1.0
+ * @since 2025-07-19
+ * @see EventService
+ * @see EventRepository
+ */
 @ExtendWith(MockitoExtension.class)
 public class EventServiceTest {
 
@@ -26,6 +58,10 @@ public class EventServiceTest {
     @InjectMocks
     private EventService eventService;
 
+    /**
+     * Testet, ob {@link EventService#getAllEvents()} eine korrekte Liste von {@link Event}-Objekten zurückgibt.
+     * Die Rückgabegrösse wird überprüft und sichergestellt, dass {@link EventRepository#findAll()} aufgerufen wurde.
+     */
     @Test
     public void whenGetAllEvents_thenReturnListOfEvents() {
         List<Event> mockEvents = List.of(new Event(), new Event());
@@ -37,6 +73,10 @@ public class EventServiceTest {
         verify(eventRepository).findAll();
     }
 
+    /**
+     * Testet, ob {@link EventService#getAllEventsAsDTO()} korrekt aus einer {@link Event}-Liste
+     * eine entsprechende {@link EventDTO}-Liste erstellt und alle Felder korrekt abbildet.
+     */
     @Test
     void whenGetAllEventsAsDTO_thenFieldsAreMappedCorrectly() {
         Event event = new Event();

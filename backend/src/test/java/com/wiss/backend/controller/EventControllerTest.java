@@ -22,6 +22,30 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * <h2>
+ *     Integrationstests für {@link EventController}
+ * </h2>
+ * <p>
+ *     Diese Tests prüfen die REST-Endpunkte des {@link EventController} mithilfe von {@link WebMvcTest}.
+ *     Der {@link EventService} wird dabei als Mock eingebunden, um gezielt die Controllerlogik zu testen.
+ * </p>
+ *
+ * <h3>
+ *     Testkontext:
+ * </h3>
+ * <ul>
+ *     <li>Verwendet {@link MockMvc} zur Simulation von HTTP-Requests</li>
+ *     <li>Testet JSON-Antworten und Statuscodes</li>
+ *     <li>Mocking des {@link EventService} mit {@code @MockBean}</li>
+ * </ul>
+ *
+ * @author Natascha Blumer
+ * @version 1.0
+ * @since 2025-07-19
+ * @see EventController
+ * @see EventService
+ */
 @WebMvcTest(EventController.class)
 public class EventControllerTest {
 
@@ -31,6 +55,12 @@ public class EventControllerTest {
     @MockBean
     private EventService eventService;
 
+    /**
+     * Testet den Endpunkt {@code GET /api/events}, der alle Events als JSON zurückgeben soll.
+     * <p>
+     *     Erwartung: Die Rückgabe enthält zwei Events, eines davon mit dem Titel "Waldbrand Kalifornien".
+     * </p>
+     */
     @Test
     public void whenGetAllEvents_thenReturnJsonArray() throws Exception {
         EventDTO event1 = new EventDTO(
@@ -64,6 +94,12 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$[0].title", is("Waldbrand Kalifornien")));
     }
 
+    /**
+     * Testet den Endpunkt {@code GET /api/events/status/closed}, der Events nach Status filtert.
+     * <p>
+     *     Erwartung: Genau ein Event mit dem Titel "Überschwemmung Italien" und Status "closed".
+     * </p>
+     */
     @Test
     public void whenGetEventsByStatus_thenReturnFilteredJsonArray() throws Exception {
         EventDTO event = new EventDTO(

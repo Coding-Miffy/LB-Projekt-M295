@@ -14,6 +14,30 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+/**
+ * <h2>
+ *     Integrationstests für {@link EventRepository}
+ * </h2>
+ * <p>
+ *     Diese Tests prüfen das Zusammenspiel von {@link EventRepository} mit einer echten Datenbankinstanz
+ *     (H2 In-Memory-DB), um sicherzustellen, dass CRUD-Operationen und benutzerdefinierte Query-Methoden korrekt funktionieren.
+ * </p>
+ *
+ * <h3>
+ *     Testkontext:
+ * </h3>
+ * <ul>
+ *     <li>Verwendet {@code @DataJpaTest} für isolierte Datenbanktests</li>
+ *     <li>Aktiviert das Profil {@code test}</li>
+ *     <li>Nutzen von {@link TestEntityManager} für direkte DB-Zugriffe</li>
+ * </ul>
+ *
+ * @author Natascha Blumer
+ * @version 1.0
+ * @since 2025-07-19
+ * @see EventRepository
+ * @see Event
+ */
 @DataJpaTest
 @ActiveProfiles("test")
 public class EventRepositoryTest {
@@ -24,6 +48,12 @@ public class EventRepositoryTest {
     @Autowired
     private EventRepository eventRepository;
 
+    /**
+     * Testet das Speichern eines {@link Event} und das anschliessende Auffinden per {@code findById()}.
+     * <p>
+     *     Erwartung: Das gespeicherte Event ist auffindbar und enthält die erwarteten Werte.
+     * </p>
+     */
     @Test
     public void whenSaveEvent_thenCanFindById() {
         Event event = new Event(
@@ -43,6 +73,12 @@ public class EventRepositoryTest {
         assertThat(found.get().getCategory()).isEqualTo(EventCategory.volcanoes);
     }
 
+    /**
+     * Testet die Query-Methode {@code findByCategory()} mit mehreren {@link Event}-Einträgen.
+     * <p>
+     *     Erwartung: Es werden genau die Events zurückgegeben, deren Kategorie {@code wildfires} ist.
+     * </p>
+     */
     @Test
     public void whenFindByCategory_thenReturnMatchingEvents() {
         Event event1 = new Event(

@@ -42,23 +42,67 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 [WIP]
 
 ## Testplan
-[Einleitung]
+Dieser Testplan dokumentiert die systematische Überprüfung der Geschäftslogik und API-Funktionalität der entwickelten Spring-Boot-Anwendung. Ziel war es, die wichtigsten Komponenten mit geeigneten Testverfahren abzusichern.
 
 ### Testfälle
-| ID | Klasse | Testziel |
-| :-: | :-- | :-- |
-| T1 | `EventService` | Sicherstellen, dass `EventService.getAllEvents()` alle Events aus dem Repository korrekt abruft und zurückliefert |
-| T2 | `EventService` | Sicherstellen, dass ein `Event` korrekt in ein `EventDTO` konvertiert wird |
-| T3 | `EventRepository` | Sicherstellen, dass ein gespeichertes Event erfolgreich per `findById()` abgerufen werden kann |
-| T4 | `EventRepository` | Sicherstellen, dass die Methode `findByCategory()` nur Events mit der gewünschten Kategorie zurückgibt |
-| T5 | `EventController` | Sicherstellen, dass der Endpunkt `/api/events` eine vollständige Eventliste im JSON-Format zurückgibt |
-| T6 | `EventController` | 	Sicherstellen, dass der Endpunkt `/api/events/status/{status}` korrekt filtert |
+| ID | Name | Klasse | Testziel | Status |
+| :-: | :-- | :-- | :-- | :-: |
+| T1 | Abruf aller Events | `EventService` | Sicherstellen, dass `EventService.getAllEvents()` alle Events aus dem Repository korrekt abruft und zurückliefert | ✅ |
+| T2 | DTO-Konvertierung | `EventService` | Sicherstellen, dass ein `Event` korrekt in ein `EventDTO` konvertiert wird | ✅ |
+| T3 | Event speichern und finden | `EventRepository` | Sicherstellen, dass ein gespeichertes Event erfolgreich per `findById()` abgerufen werden kann | ✅ |
+| T4 | Events nach Kategorie | `EventRepository` | Sicherstellen, dass die Methode `findByCategory()` nur Events mit der gewünschten Kategorie zurückgibt | ✅ |
+| T5 | REST-Antwort | `EventController` | Sicherstellen, dass der Endpunkt `/api/events` eine vollständige Eventliste im JSON-Format zurückgibt | ✅ |
+| T6 | REST-Antwort | `EventController` | 	Sicherstellen, dass der Endpunkt `/api/events/status/{status}` korrekt filtert | ✅ |
+
+### Vorgehen
+Die Testfälle wurden in drei Kategorien unterteilt:
+
+- **Unit-Tests** (*EventService*): Mit `@ExtendWith(MockitoExtension.class)` und `@Mock` wurde der Service isoliert vom Repository getestet.
+
+- **Integrationstests mit Datenbank** (*EventRepository*): Mit `@DataJpaTest` und einer H2-In-Memory-Datenbank wurden Repository-Methoden realitätsnah geprüft.
+
+- **Controller-Tests mit MockMvc** (*EventController*): Mit `@WebMvcTest` und `MockMvc` wurden HTTP-Requests simuliert und das Verhalten der REST-Endpunkte getestet.
+
+### Testumgebung
+- **Test-Framework**: JUnit 5
+- **Mocking**: Mockito
+- **Datenbank**: H2 (In-Memory)
+- **HTTP-Simulation**: Spring `MockMvc`
+- **Testprofil**: `test`-Profil mit isolierter Konfiguration
 
 ## Durchführung der Tests
-[Einleitung]
+Zur Sicherstellung der Funktionalität der REST-API wurden insgesamt **6 Testfälle** umgesetzt, die sowohl die **Service-**, **Repository-** als auch **Controller-Schicht** abdecken. Die Tests wurden mit JUnit 5, Mockito sowie Spring Boot Test durchgeführt.  
+Alle Tests wurden automatisiert durchgeführt und vollständig bestanden.
 
-### T1 - Name
-[Durchführung des Tests]
+### T1 - Abruf aller Events
+>**Methode**: `EventService.getAllEvents()`
+
+Die Methode `getAllEvents()` wurde mit einem gemockten Repository getestet. Dieses lieferte zwei vordefinierte Event-Objekte zurück. Anschliessend wurde überprüft, ob die zurückgegebene Liste korrekt ist und ob `findAll()` wie erwartet aufgerufen wurde.  
+
+### T2 - DTO-Konvertierung
+>**Methode**: `EventService.getAllEventsAsDTO()`
+
+Ein einzelnes Event mit definierten Feldern wurde vom Mock-Repository zurückgegeben. Der Test prüfte, ob die Felder korrekt ins DTO übertragen wurden (z. B. Titel, Datum, Kategorie, Koordinaten, Status).
+
+### T3 - Event speichern und finden
+>**Methode**: `EventRepository.findById()`
+
+Ein neues Event wurde mit dem `TestEntityManager` persistiert. Danach wurde mit `findById()` versucht, das Event zu laden. Der Test verifizierte, dass das Event existiert und die erwarteten Felder korrekt gespeichert wurden.
+
+### T4 - Events nach Kategorie
+>**Methode**: `EventRepository.findByCategory()`
+
+Drei Events mit unterschiedlichen Kategorien wurden in die Datenbank geschrieben. Anschliessend wurde die Methode `findByCategory()` mit dem Wert `wildfires` getestet. Der Test prüfte, ob genau zwei passende Events zurückgegeben wurden.
+
+### T5 - REST-Antwort
+>**Methode**: `EventController.getAllEvents()`
+
+Über `MockMvc` wurde ein HTTP-GET-Request an `/api/events` simuliert. Der Mock-Service lieferte zwei Events zurück. Der Test prüfte, ob die JSON-Antwort korrekt strukturiert war und den Titel des ersten Events korrekt enthielt.
+
+### T6 - REST-Antwort
+>**Methode**: `EventController.getEventsByStatus()`
+
+Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. Der Mock-Service lieferte ein einzelnes geschlossenes Event zurück. Der Test prüfte, ob dieses Event korrekt im JSON-Response enthalten war und den erwarteten Status hatte.
 
 ## Installationsanleitung
 [Einleitung]
@@ -82,7 +126,9 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 ### ChatGPT
 - Rechtschreibekorrektur und als Unterstützung beim Verfassen von Textabschnitten der Dokumentation.
 
-@PastOrPresent bei EventDTO
+@PastOrPresent bei EventDTO  
+Ideen bei Tests  
+Verfassen der JavaDoc Kommentare
 
 ---
 >[!NOTE]
@@ -143,12 +189,8 @@ Verzeichnis 'service':
 
 Verzeichnis 'com.wiss.backend' (inkl. Application):
 
-**test**  
-Verzeichnis 'com.wiss.backend' (inkl. Application):
-
-Verzeichnis 'controller':
-
-Verzeichnis 'repository':
-
-Verzeichnis 'service':
+test: **komplett** 
+- EventControllerTest
+- EventRepositoryTest
+- EventServiceTest
 

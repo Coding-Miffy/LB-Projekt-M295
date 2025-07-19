@@ -33,25 +33,29 @@ public class Event {
     /**
      * Eindeutige ID des Events (Primary Key).
      * Wird automatisch von der Datenbank generiert.
+     * @see #getId()
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
-     * Titel des Events (z. B. "Erdbeben in Japan").
+     * Titel des Events (z. B. "Earthquake in Japan").
+     * @see #getTitle()
      */
     @Column(name = "title", nullable = false)
     private String title;
 
     /**
      * Datum, an dem das Event stattgefunden bzw. begonnen hat.
+     * @see #getDate()
      */
     @Column(name = "date", nullable = false)
     private LocalDate date;
 
     /**
      * Kategorie des Events (z. B. <code>floods</code>, <code>volcanoes</code>).
+     * @see #getCategory()
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false, length = 50)
@@ -59,20 +63,23 @@ public class Event {
 
     /**
      * Längengrad des Ereignis-Standorts.
-     * Erwarteter Wertebereich: -180 bis 180.
+     * @apiNote Erwarteter Wertebereich: -180 bis 180.
+     * @see #getLongitude()
      */
     @Column(name = "longitude", nullable = false, length = 50)
     private Double longitude;
 
     /**
      * Breitengrad des Ereignis-Standorts.
-     * Erwarteter Wertebereich: -90 bis 90.
+     * @apiNote Erwarteter Wertebereich: -90 bis 90.
+     * @see #getLatitude()
      */
     @Column(name = "latitude", nullable = false, length = 50)
     private Double latitude;
 
     /**
      * Status des Events (offen oder abgeschlossen).
+     * @see #getStatus()
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
@@ -127,7 +134,6 @@ public class Event {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -135,19 +141,16 @@ public class Event {
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
     public LocalDate getDate() { return date; }
-
     public void setDate(LocalDate date) { this.date = date; }
 
     public EventCategory getCategory() {
         return category;
     }
-
     public void setCategory(EventCategory category) {
         this.category = category;
     }
@@ -155,7 +158,6 @@ public class Event {
     public Double getLongitude() {
         return longitude;
     }
-
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
@@ -163,7 +165,6 @@ public class Event {
     public Double getLatitude() {
         return latitude;
     }
-
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
@@ -171,7 +172,6 @@ public class Event {
     public EventStatus getStatus() {
         return status;
     }
-
     public void setStatus(EventStatus status) {
         this.status = status;
     }

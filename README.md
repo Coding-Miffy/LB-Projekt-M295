@@ -82,7 +82,9 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 ### ChatGPT
 - Rechtschreibekorrektur und als Unterstützung beim Verfassen von Textabschnitten der Dokumentation.
 
-@PastOrPresent bei EventDTO
+@PastOrPresent bei EventDTO  
+Ideen bei Tests  
+Verfassen der JavaDoc Kommentare
 
 ---
 >[!NOTE]
@@ -143,12 +145,8 @@ Verzeichnis 'service':
 
 Verzeichnis 'com.wiss.backend' (inkl. Application):
 
-**test**  
-Verzeichnis 'com.wiss.backend' (inkl. Application):
-
-Verzeichnis 'controller':
-
-Verzeichnis 'repository':
-
-Verzeichnis 'service':
+test: **komplett** 
+- EventControllerTest
+- EventRepositoryTest
+- EventServiceTest
 

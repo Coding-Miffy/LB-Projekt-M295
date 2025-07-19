@@ -131,9 +131,11 @@ Verzeichnis 'dto': **komplett**
 - EventFormDTO
 - package info
 
-Verzeichnis 'controller':
+Verzeichnis 'mapper': **komplett**  
+- EventMapper
+- package info
 
-Verzeichnis 'mapper':
+Verzeichnis 'controller':
 
 Verzeichnis 'repository':
 

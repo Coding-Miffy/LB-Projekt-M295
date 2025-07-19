@@ -36,6 +36,7 @@ import java.util.Map;
  * @author Natascha Blumer
  * @version 1.0
  * @since 2025-07-18
+ * @see ErrorResponseDTO
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {

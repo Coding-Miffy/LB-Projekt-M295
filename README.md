@@ -125,9 +125,11 @@ Verzeichnis 'model': **komplett**
 - EventStatus
 - package info
 
-Verzeichnis 'dto':  
-[] package info?
+Verzeichnis 'dto': **komplett**  
 - ErrorResponseDTO
+- EventDTO
+- EventFormDTO
+- package info
 
 Verzeichnis 'controller':
 
@@ -148,8 +150,3 @@ Verzeichnis 'repository':
 
 Verzeichnis 'service':
 
-## Notizen:
-**Was muss die API können?**
-- Anzahl N an open Events einer Kategorie mit Koordinaten (Filter: Anzahl N, Kategorie, open)
-- Anzahl N an closed Events einer Kategorie mit Datum (Filter: Anzahl N, Kategorie, Start- und Enddatum, closed)
-- Event erstellen

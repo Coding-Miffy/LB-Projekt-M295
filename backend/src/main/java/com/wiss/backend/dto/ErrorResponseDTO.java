@@ -31,26 +31,31 @@ public class ErrorResponseDTO {
     /**
      * Kurzcode zur maschinenlesbaren Beschreibung des Fehlertyps
      * (z. B. {@code "EVENT_NOT_FOUND"}, {@code "INVALID_INPUT"}, {@code "INTERNAL_SERVER_ERROR"}).
+     * @see #getError()
      */
     private String error;
 
     /**
      * Menschlich lesbare Fehlermeldung, geeignet für Anzeige im Frontend.
+     * @see #getMessage()
      */
     private String message;
 
     /**
      * HTTP-Statuscode, der den Typ des Fehlers beschreibt (z. B. 400, 404, 500).
+     * @see #getCode()
      */
     private int code;
 
     /**
      * Zeitstempel des Fehlers (z. B. gesetzt mit {@link java.time.LocalDateTime#now()}).
+     * @see #getTimestamp()
      */
     private LocalDateTime timestamp;
 
     /**
-     * Der URI-Pfad der fehlerhaften Anfrage (z. B. "/api/events/42").
+     * Der URI-Pfad der fehlerhaften Anfrage (z. B. {@code /api/events/42}).
+     * @see #getPath()
      */
     private String path;
 
@@ -72,43 +77,18 @@ public class ErrorResponseDTO {
     }
 
     // Getter & Setter
-    public String getError() {
-        return error;
-    }
+    public String getError() { return error; }
+    public void setError(String error) { this.error = error; }
 
-    public void setError(String error) {
-        this.error = error;
-    }
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
 
-    public String getMessage() {
-        return message;
-    }
+    public int getCode() { return code; }
+    public void setCode(int code) { this.code = code; }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    public LocalDateTime getTimestamp() { return timestamp; }
+    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
+    public String getPath() { return path; }
+    public void setPath(String path) { this.path = path; }
 }

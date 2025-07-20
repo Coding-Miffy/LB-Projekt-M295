@@ -194,9 +194,11 @@ Verzeichnis 'repository': **komplett**
 - EventRepository
 - package info
 
-Verzeichnis 'controller':
+Verzeichnis 'service': **komplett**
+- EventService
+- package info
 
-Verzeichnis 'service':
+Verzeichnis 'controller':
 
 Verzeichnis 'com.wiss.backend' (inkl. Application):
 

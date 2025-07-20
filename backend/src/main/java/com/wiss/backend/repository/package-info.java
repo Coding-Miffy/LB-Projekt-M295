@@ -1,6 +1,6 @@
 /**
  * <h2>
- *     Repository-Schicht
+ *     Repository-Layer
  * </h2>
  * <p>
  *     Dieses Paket enthält die Repository-Interfaces für den Datenzugriff.
@@ -24,6 +24,10 @@
  *     <li>{@code JpaRepository} von Spring Data JPA</li>
  *     <li>Automatisches Query-Deriving auf Basis von Methodennamen</li>
  * </ul>
+ *
+ * @author Natascha Blumer
+ * @version 1.0
+ * @since 2025-07-20
  *
  * @see com.wiss.backend.entity.Event
  * @see com.wiss.backend.service.EventService

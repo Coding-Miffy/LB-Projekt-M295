@@ -190,9 +190,11 @@ Verzeichnis 'mapper': **komplett**
 - EventMapper
 - package info
 
-Verzeichnis 'controller':
+Verzeichnis 'repository': **komplett**  
+- EventRepository
+- package info
 
-Verzeichnis 'repository':
+Verzeichnis 'controller':
 
 Verzeichnis 'service':
 

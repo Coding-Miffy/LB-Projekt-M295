@@ -8,17 +8,17 @@
 [Hier kommt Einleitung]
 
 ## Projektidee
-Ich entwickle ein Backend für eine bestehende React-Frontend-Applikation (Modul 294), mit der Nutzer:innen aktuelle und vergangene Naturereignisse wie Waldbrände, Erdbeben oder Überschwemmungen entdecken und dokumentieren können.
+Ich entwickle ein Backend für eine bestehende React-Frontend-Applikation (*Eaart Natural Events Tracker*, Modul 294), mit der Nutzer:innen aktuelle und vergangene Naturereignisse wie Waldbrände, Erdbeben oder Überschwemmungen entdecken und dokumentieren können.
 
 Das Backend stellt eine REST-API zur Verfügung, über welche autorisierte Benutzer:innen (z. B. Forscher:innen oder Behörden) neue Naturereignisse erfassen, bestehende aktualisieren oder nicht mehr relevante Einträge löschen können. Zusätzlich werden Filter- und Statistik-Endpunkte angeboten, um Ereignisse nach Datum, Kategorie oder Status auszuwerten. Die Daten werden persistent in einer PostgreSQL-Datenbank gespeichert.
 
 Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbare Datenbasis für globale Naturereignisse zu schaffen, die sich mit dem vorhandenen Frontend nahtlos kombinieren lässt. Dabei werden bewährte Technologien wie Spring Boot, Spring Data JPA, PostgreSQL und OpenAPI eingesetzt.
 
 ## Anforderungsanalyse
-[Einleitung]
+Im Rahmen dieser Anforderungsanalyse wurden die funktionalen Erwartungen an das Backend des *Earth Natural Events Trackers* systematisch erfasst. Die Anforderungen orientieren sich an den typischen Aufgaben von Nutzer:innen und wurden in Form von User Stories, einem Use-Case-Diagramm sowie konkreten funktionalen Anforderungen dokumentiert. Ziel ist es, die zentralen Interaktionen mit dem System nachvollziehbar und technisch umsetzbar zu beschreiben.
 
 ### User Stories
-[Einleitung]
+Die folgenden User Stories beschreiben typische Nutzungsszenarien aus Sicht der Anwender:innen. Sie helfen, die fachlichen Anforderungen verständlich zu formulieren und den Fokus auf die Nutzerbedürfnisse zu legen.
 
 - **User Story 1**: [Naturereignisse erfassen](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/1)
 - **User Story 2**: [Naturereignisse filtern](https://github.com/Coding-Miffy/LB-Projekt-M295/issues/2)
@@ -26,16 +26,23 @@ Ziel der Anwendung ist es, eine strukturierte, filterbare und leicht erweiterbar
 
 ### Use Case
 Das folgende Use-Case-Diagramm veranschaulicht die Interaktion verschiedener Benutzerrollen mit der EONET REST API.
-Zwei Akteur:innen – `Forscher:in` und `Benutzer:in` – führen jeweils spezifische Aktionen durch. Gemeinsam genutzte Teilfunktionalitäten (z. B. Eingabevalidierung oder Filterung) sind als `include`-Beziehungen dargestellt.
+Zwei Akteur:innen – `Forscher:in` und `Benutzer:in` – führen jeweils spezifische Aktionen durch. Gemeinsam genutzte Teilfunktionalitäten und Funktionalitäten mit Abhängigkeiten (z. B. Eingabevalidierung oder Filterung) sind als `<<include>>`-Beziehungen dargestellt.
 
 ![Use Case Diagramm](/resources/usecase-diagram.jpg)
 
 ### Kernaufgaben
-[Einleitung]
+Die nachfolgende Liste dokumentiert die zentralen funktionalen Anforderungen der Anwendung. Diese Anforderungen definieren, welche konkreten Fähigkeiten das System bieten muss, um die in den User Stories beschriebenen Anwendungsfälle abzudecken.
 
 | ID | Funktionale Anforderungen |
 | :-: | :-- |
-| F1 |  |
+| F1 | Die Anwendung soll es ermöglichen, ein Naturereignis mit Titel, Datum, Kategorie, Koordinaten und Status zu erfassen. |
+| F2 | Die Anwendung soll alle gespeicherten Ereignisse abrufbar machen. |
+| F3 | Die Anwendung soll es erlauben, Ereignisse nach Status, Kategorie und Zeitraum zu filtern |
+| F4 | Die Anwendung soll einzelne Ereignisse anhand ihrer ID abrufen. |
+| F5 | Die Anwendung soll es ermöglichen, ein bestehendes Ereignis zu bearbeiten. |
+| F6 | Die Anwendung soll es ermöglichen, ein Ereignis zu löschen. |
+| F7 | Die Anwendung soll validieren, dass alle Pflichtfelder korrekt ausgefüllt sind. |
+| F8 | Die REST-API soll im JSON-Format kommunizieren. |
 
 ## Diagramm der Modell-Komponenten
 [WIP]

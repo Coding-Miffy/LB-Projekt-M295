@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -34,8 +35,8 @@ import java.util.Map;
  * </p>
  *
  * @author Natascha Blumer
- * @version 1.0
- * @since 2025-07-18
+ * @version 1.1
+ * @since 2025-07-20
  * @see ErrorResponseDTO
  */
 @ControllerAdvice
@@ -51,15 +52,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(EventNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleEventNotFound(EventNotFoundException ex, WebRequest request) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
+        return buildError(
                 "EVENT_NOT_FOUND",
                 ex.getMessage(),
                 404,
-                LocalDateTime.now(),
-                extractPath(request)
+                request
         );
-
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -72,14 +70,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(FutureDateException.class)
     public ResponseEntity<ErrorResponseDTO> handleFutureDate(FutureDateException ex, WebRequest request) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
+        return buildError(
                 "INVALID_DATE",
                 ex.getMessage(),
                 400,
-                LocalDateTime.now(),
-                extractPath(request)
+                request
         );
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -92,14 +88,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(CoordinateOutOfRangeException.class)
     public ResponseEntity<ErrorResponseDTO> handleCoordinateOutOfRange(CoordinateOutOfRangeException ex, WebRequest request) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
+        return buildError(
                 "INVALID_COORDINATE",
                 ex.getMessage(),
                 400,
-                LocalDateTime.now(),
-                extractPath(request)
+                request
         );
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -112,15 +106,35 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(InvalidEventDataException.class)
     public ResponseEntity<ErrorResponseDTO> handleInvalidEventData(InvalidEventDataException ex, WebRequest request) {
-        ErrorResponseDTO error = new ErrorResponseDTO(
+        return buildError(
                 "INVALID_EVENT_DATA",
                 ex.getMessage(),
                 400,
-                LocalDateTime.now(),
-                extractPath(request)
+                request
         );
+    }
 
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    /**
+     * Behandelt {@link MethodArgumentTypeMismatchException}, die auftritt, wenn z. B.
+     * eine ungültige ID oder ein ungültiger Enum-Wert in einem {@code @PathVariable}
+     * oder {@code @RequestParam} übergeben wurde.
+     *
+     * @param ex Die ausgelöste MethodArgumentTypeMismatchException.
+     * @param request Der zugehörige HTTP-Request.
+     * @return Strukturierte Fehlerantwort mit HTTP-Status 400 (Bad Request).
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponseDTO> handleTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
+        String message = String.format("Ungültiger Wert für '%s': '%s'. Erwartet: %s.",
+                ex.getName(),
+                ex.getValue(),
+                ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "unbekannt");
+
+        return buildError(
+                "TYPE_MISMATCH",
+                message,
+                400,
+                request);
     }
 
     /**
@@ -139,38 +153,32 @@ public class GlobalExceptionHandler {
             String invalidValue = cause.getValue().toString();
 
             if ("category".equals(fieldName)) {
-                ErrorResponseDTO error = new ErrorResponseDTO(
+                return buildError(
                         "INVALID_CATEGORY",
                         "Kategorie '" + invalidValue + "' ist nicht gültig. " +
                                 "Gültige Kategorien: drought, dustHaze, earthquakes, floods, landslides, manmade, seaLakeIce, severeStorms, snow, volcanoes, waterColor, wildfires",
                         400,
-                        LocalDateTime.now(),
-                        extractPath(request)
+                        request
                 );
-                return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
             }
 
             if ("status".equals(fieldName)) {
-                ErrorResponseDTO error = new ErrorResponseDTO(
+                return buildError(
                         "INVALID_STATUS",
                         "Status '" + invalidValue + "' ist nicht gültig. Erlaubt sind: open, closed.",
                         400,
-                        LocalDateTime.now(),
-                        extractPath(request)
+                        request
                 );
-                return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
             }
         }
 
         // Allgemeiner Fallback
-        ErrorResponseDTO error = new ErrorResponseDTO(
+        return buildError(
                 "MALFORMED_JSON",
                 "Die Anfrage konnte nicht gelesen werden: " + ex.getMessage(),
                 400,
-                LocalDateTime.now(),
-                extractPath(request)
+                request
         );
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -196,15 +204,12 @@ public class GlobalExceptionHandler {
         errors.forEach((field, error) -> message.append(field)
                 .append(" - ").append(error).append("; "));
 
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+        return buildError(
                 "VALIDATION_ERROR",
                 message.toString(),
                 400,
-                LocalDateTime.now(),
-                extractPath(request)
+                request
         );
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -221,15 +226,36 @@ public class GlobalExceptionHandler {
         System.err.println("Unhandled exception: " + ex.getMessage());
         ex.printStackTrace();
 
-        ErrorResponseDTO error = new ErrorResponseDTO(
+        return buildError(
                 "INTERNAL_SERVER_ERROR",
                 "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
                 500,
+                request
+        );
+    }
+
+    /**
+     * Erstellt eine strukturierte Fehlerantwort im Standardformat.
+     * <p>
+     *     Wird von allen spezifischen Exception-Handlern verwendet, um Redundanz zu vermeiden.
+     *     Enthält Fehlertyp, Nachricht, HTTP-Status, Zeitstempel und URI-Pfad.
+     * </p>
+     *
+     * @param type Technischer Fehlercode, z. B. "INVALID_STATUS".
+     * @param message Verständliche Fehlernachricht für den Client.
+     * @param status HTTP-Statuscode, z. B. 400 oder 404.
+     * @param request Der zugehörige HTTP-Request zur Pfadextraktion.
+     * @return Strukturierte Fehlerantwort mit {@link ErrorResponseDTO}.
+     */
+    private ResponseEntity<ErrorResponseDTO> buildError(String type, String message, int status, WebRequest request) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                type,
+                message,
+                status,
                 LocalDateTime.now(),
                 extractPath(request)
         );
-
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(error, HttpStatus.valueOf(status));
     }
 
     /**

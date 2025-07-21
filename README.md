@@ -138,6 +138,7 @@ Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. De
 @PastOrPresent bei EventDTO  
 Ideen bei Tests  
 Verfassen der JavaDoc Kommentare
+Exception Handling für MethodArgumentTypeMismatchException und HttpMessageNotReadableException
 
 ---
 >[!NOTE]

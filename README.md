@@ -138,72 +138,12 @@ Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. De
 @PastOrPresent bei EventDTO  
 Ideen bei Tests  
 Verfassen der JavaDoc Kommentare
+Exception Handling für MethodArgumentTypeMismatchException und HttpMessageNotReadableException
 
 ---
 >[!NOTE]
 >**Swagger**: http://localhost:8080/swagger-ui/index.html
 
 ## To-Do:  
-- Advanced Query Methods *5A*
-- Swagger (Controller + DTO) *5B*
-- Swagger Controller: /date
-- JavaDoc
-- Service: Date Validierung?
-- Service (und vlt mehr): Longitude/Latitude Validierung
-- Sicherstellen: Alles zu Date komplett?
-- Stehen geblieben bei *6A*: Service anpassen
 - Frontend: Englisch
 - Backend: Deutsch
-- Controller/Swagger: API und Responses testen
-- 500er wenn daten unvollständig
-
-## JavaDoc abgeschlossen:
-Verzeichnis 'exception': **komplett**  
-- GlobalExceptionHandler
-- CoordinateOutOfRangeException
-- EventNotFoundException
-- FutureDateException
-- InvalidEventDataException
-- package info
-
-Verzeichnis 'config': **komplett**  
-- SwaggerConfig
-- WebConfig
-- package info
-
-Verzeichnis 'entity': **komplett**  
-- Event
-- package info
-
-Verzeichnis 'model': **komplett**  
-- EventCategory
-- EventStatus
-- package info
-
-Verzeichnis 'dto': **komplett**  
-- ErrorResponseDTO
-- EventDTO
-- EventFormDTO
-- package info
-
-Verzeichnis 'mapper': **komplett**  
-- EventMapper
-- package info
-
-Verzeichnis 'repository': **komplett**  
-- EventRepository
-- package info
-
-Verzeichnis 'service': **komplett**
-- EventService
-- package info
-
-Verzeichnis 'controller':
-
-Verzeichnis 'com.wiss.backend' (inkl. Application):
-
-test: **komplett** 
-- EventControllerTest
-- EventRepositoryTest
-- EventServiceTest
-

@@ -44,8 +44,18 @@ Die nachfolgende Liste dokumentiert die zentralen funktionalen Anforderungen der
 | F7 | Die Anwendung soll validieren, dass alle Pflichtfelder korrekt ausgefüllt sind. |
 | F8 | Die REST-API soll im JSON-Format kommunizieren. |
 
-## Diagramm der Modell-Komponenten
-[WIP]
+## Klassendiagramm der Backend-Komponenten
+Das folgende Klassendiagramm veranschaulicht den strukturellen Aufbau der entwickelten Applikation sowie die Beziehungen zwischen den zentralen Komponenten. Es bildet die wichtigsten Klassen, Enums, Interfaces und benutzerdefinierten Exceptions des Projekts ab und zeigt deren Zusammenspiel in der Backend-Architektur.
+
+Im Mittelpunkt steht der `EventService`, der als zentrale Geschäftslogik fungiert. Er greift auf das `EventRepository` zur Datenpersistenz zu und verwendet den `EventMapper` zur Konvertierung zwischen den Entitäten (`Event`) und den Datenübertragungsobjekten (`EventDTO`, `EventFormDTO`). Die REST-Schnittstelle wird über den `EventController` bereitgestellt, der eingehende Anfragen entgegennimmt und an den Service weiterleitet.
+
+![Klassendiagramm](/resources/class-diagram.jpg)
+
+Zusätzlich zeigt das Diagramm den globalen Exception-Handler (`GlobalExceptionHandler`), der alle anwendungsweiten Fehlerfälle behandelt und einheitliche Fehlermeldungen in Form von `ErrorResponseDTO` zurückliefert. Eigene Exceptionklassen wie `EventNotFoundException` oder `InvalidEventDataException` dienen zur gezielten Fehlerdifferenzierung.
+
+Zur besseren Lesbarkeit wurden alle Abhängigkeiten als «uses»-Beziehungen gekennzeichnet. Die Pfeile geben jeweils an, welche Klasse eine andere verwendet. Die Enums `EventStatus` und `EventCategory` werden sowohl in den Entitäten als auch in der Business-Logik verwendet.
+
+Das Diagramm bietet damit eine übersichtliche Darstellung der Klassenstruktur und erleichtert das Verständnis für den Aufbau und die Verantwortlichkeiten innerhalb der Anwendung.
 
 ## REST-Schnittstellen
 [WIP]

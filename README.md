@@ -58,7 +58,31 @@ Zur besseren Lesbarkeit wurden alle Abhängigkeiten als «uses»-Beziehungen gek
 Das Diagramm bietet damit eine übersichtliche Darstellung der Klassenstruktur und erleichtert das Verständnis für den Aufbau und die Verantwortlichkeiten innerhalb der Anwendung.
 
 ## REST-Schnittstellen
+Die entwickelte Applikation stellt eine REST-API zur Verfügung, über die alle relevanten Operationen auf Naturereignissen durchgeführt werden können. Diese Schnittstellen bilden die zentrale Interaktionsebene für das Frontend sowie potenzielle Drittanwendungen.
+
+### Aufbau
+Die REST-Endpunkte sind im `EventController` definiert und folgen den Konventionen für Ressourcen-orientierte APIs. Alle Anfragen und Antworten verwenden das JSON-Format, und HTTP-Statuscodes werden konsistent zur Rückmeldung über den Erfolg oder Fehler einer Operation eingesetzt.
+
+### Unterstützte Endpunkte
+| Methode | Pfad | Beschreibung |
+| :-: | :-- | :-- |
+| `GET` | `/api/events` | Listet alle gespeicherten Naturereignisse auf |
+|  |  |  |
+
+### Besonderheiten
+- **Validierung**: Eingehende Daten werden mithilfe von Bean Validation überprüft. Ungültige Eingaben führen zu spezifischen Fehlermeldungen.
+
+- **Fehlerbehandlung**: Über den zentralen `GlobalExceptionHandler` werden auftretende Fehler in konsistente Fehlerobjekte (`ErrorResponseDTO`) überführt.
+
+- **CORS-Konfiguration**: Um Cross-Origin-Anfragen vom Frontend (z. B. `localhost:3000`) zu ermöglichen, wurde die API gezielt für bestimmte Ursprünge freigegeben.
+
+### Beispiel für eine Anfrage
 [WIP]
+
+>[!NOTE]
+>Check Redundanz und bei Cors-Konfiguration ob WebConfig erwähnt werden soll
+>Tabelle ergänzen
+>Beispiel für eine Anfrage ergänzen
 
 ## Testplan
 Dieser Testplan dokumentiert die systematische Überprüfung der Geschäftslogik und API-Funktionalität der entwickelten Spring-Boot-Anwendung. Ziel war es, die wichtigsten Komponenten mit geeigneten Testverfahren abzusichern.

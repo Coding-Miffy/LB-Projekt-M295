@@ -28,7 +28,7 @@ Die folgenden User Stories beschreiben typische Nutzungsszenarien aus Sicht der 
 Das folgende Use-Case-Diagramm veranschaulicht die Interaktion verschiedener Benutzerrollen mit der EONET REST API.
 Zwei Akteur:innen – `Forscher:in` und `Benutzer:in` – führen jeweils spezifische Aktionen durch. Gemeinsam genutzte Teilfunktionalitäten und Funktionalitäten mit Abhängigkeiten (z. B. Eingabevalidierung oder Filterung) sind als `<<include>>`-Beziehungen dargestellt.
 
-![Use Case Diagramm](/resources/usecase-diagram.jpg)
+![Use Case Diagramm](/resources/images/usecase-diagram.jpg)
 
 ### Kernaufgaben
 Die nachfolgende Liste dokumentiert die zentralen funktionalen Anforderungen der Anwendung. Diese Anforderungen definieren, welche konkreten Fähigkeiten das System bieten muss, um die in den User Stories beschriebenen Anwendungsfälle abzudecken.
@@ -49,7 +49,7 @@ Das folgende Klassendiagramm veranschaulicht den strukturellen Aufbau der entwic
 
 Im Mittelpunkt steht der `EventService`, der als zentrale Geschäftslogik fungiert. Er greift auf das `EventRepository` zur Datenpersistenz zu und verwendet den `EventMapper` zur Konvertierung zwischen den Entitäten (`Event`) und den Datenübertragungsobjekten (`EventDTO`, `EventFormDTO`). Die REST-Schnittstelle wird über den `EventController` bereitgestellt, der eingehende Anfragen entgegennimmt und an den Service weiterleitet.
 
-![Klassendiagramm](/resources/class-diagram.jpg)
+![Klassendiagramm](/resources/images/class-diagram.jpg)
 
 Zusätzlich zeigt das Diagramm den globalen Exception-Handler (`GlobalExceptionHandler`), der alle anwendungsweiten Fehlerfälle behandelt und einheitliche Fehlermeldungen in Form von `ErrorResponseDTO` zurückliefert. Eigene Exceptionklassen wie `EventNotFoundException` oder `InvalidEventDataException` dienen zur gezielten Fehlerdifferenzierung.
 

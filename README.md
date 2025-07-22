@@ -1,8 +1,8 @@
 # Projektdokumentation
 **Modul**: 295   
 **Autor:in**: Natascha Blumer  
-**Datum**:  
-**Version**:  
+**Datum**: 22.07.2025  
+**Version**: 1.0  
 
 ## Einleitung
 [Hier kommt Einleitung]
@@ -61,7 +61,7 @@ Das Diagramm bietet damit eine übersichtliche Darstellung der Klassenstruktur u
 Die entwickelte Applikation stellt eine REST-API zur Verfügung, über die alle relevanten Operationen auf Naturereignissen durchgeführt werden können. Diese Schnittstellen bilden die zentrale Interaktionsebene für das Frontend sowie potenzielle Drittanwendungen.
 
 ### Aufbau
-Die REST-Endpunkte sind im `EventController` definiert und folgen den Konventionen für Ressourcen-orientierte APIs. Alle Anfragen und Antworten verwenden das JSON-Format, und HTTP-Statuscodes werden konsistent zur Rückmeldung über den Erfolg oder Fehler einer Operation eingesetzt.
+Die REST-Endpunkte sind im `EventController` definiert und folgen weitestgehend den Konventionen für Ressourcen-orientierte APIs. Alle Anfragen und Antworten verwenden das JSON-Format, und HTTP-Statuscodes werden konsistent zur Rückmeldung über den Erfolg oder Fehler einer Operation eingesetzt.
 
 ### Unterstützte Endpunkte
 | Methode | Pfad | Beschreibung |
@@ -89,15 +89,26 @@ Die REST-Endpunkte sind im `EventController` definiert und folgen den Konvention
 
 - **Fehlerbehandlung**: Über den zentralen `GlobalExceptionHandler` werden auftretende Fehler in konsistente Fehlerobjekte (`ErrorResponseDTO`) überführt.
 
-- **CORS-Konfiguration**: Um Cross-Origin-Anfragen vom Frontend (z. B. `localhost:3000`) zu ermöglichen, wurde die API gezielt für bestimmte Ursprünge freigegeben.
+- **CORS-Konfiguration**: Um Cross-Origin-Anfragen vom Frontend (z. B. `http://localhost:3000`) zu ermöglichen, wurde die API gezielt für bestimmte Ursprünge freigegeben. Dies geschieht in der `WebConfig`-Klasse, welche `WebMvcConfigurer` implementiert und die Methode `addCorsMappings()` überschreibt, um gezielt Pfade freizuschalten.
+
+- **Kombination von REST und Formularlogik**: Die API folgt weitgehend RESTful-Prinzipien, bietet jedoch zusätzlich alternative Endpunkte wie `/create`, `/update` oder `/edit` an. Diese orientieren sich an Formulardaten-Workflows und erleichtern die Integration in UI-orientierte Anwendungen. Durch diese Hybridstruktur wird eine flexible Anbindung unterschiedlicher Frontends ermöglicht, sowohl für klassische REST-Clients als auch für formularbasierte Web-Oberflächen.
 
 ### Beispiel für eine Anfrage
-[WIP]
+>**POST**: `/api/events`
 
->[!NOTE]
->Check Redundanz und bei Cors-Konfiguration ob WebConfig erwähnt werden soll
->Tabelle ergänzen
->Beispiel für eine Anfrage ergänzen
+Erstellt ein neues Naturereignis basierend auf den übergebenen Daten. Die Anfrage erwartet ein JSON-Objekt basierend auf dem `EventDTO`.
+
+**Request-Body (JSON)**:
+```json
+{
+  "title": "Vulkanausbruch Island",
+  "date": "2025-07-01",
+  "latitude": 64.9631,
+  "longitude": -19.0208,
+  "status": "open",
+  "category": "volcanoes"
+}
+```
 
 ## Testplan
 Dieser Testplan dokumentiert die systematische Überprüfung der Geschäftslogik und API-Funktionalität der entwickelten Spring-Boot-Anwendung. Ziel war es, die wichtigsten Komponenten mit geeigneten Testverfahren abzusichern.
@@ -173,6 +184,8 @@ Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. De
 ### Swagger
 [Einleitung]  
 [Link]
+>[!NOTE]
+>**Swagger**: http://localhost:8080/swagger-ui/index.html
 
 ### JavaDoc
 [Einleitung]  
@@ -193,11 +206,3 @@ Beim Erstellen des Klassendiagramms (Beziehungen erkennen)
 ### Graziano Laveder (Dozent M 295)
 
 ### SideQuests M 295
-
----
->[!NOTE]
->**Swagger**: http://localhost:8080/swagger-ui/index.html
-
-## To-Do:  
-- Frontend: Englisch
-- Backend: Deutsch

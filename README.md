@@ -151,6 +151,10 @@ Verfassen der JavaDoc Kommentare
 Exception Handling für MethodArgumentTypeMismatchException und HttpMessageNotReadableException
 Beim Erstellen des Klassendiagramms (Beziehungen erkennen)
 
+### Graziano Laveder (Dozent M 295)
+
+### SideQuests M 295
+
 ---
 >[!NOTE]
 >**Swagger**: http://localhost:8080/swagger-ui/index.html

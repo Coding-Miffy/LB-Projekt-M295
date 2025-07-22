@@ -48,7 +48,7 @@ const CustomEventCard = ({ event, onEdit, onDelete }) => {
         if (!editTitle.trim() || !editDate.trim()) {
             alert("Fill out Title and Date");
             return;
-        };
+        }
 
         const updatedEvent = {
             ...event,
@@ -71,7 +71,7 @@ const CustomEventCard = ({ event, onEdit, onDelete }) => {
         );
         if (isConfirmed) {
             onDelete(event.id);
-        };
+        }
     };
 
     // JSX: Darstellung der Komponente

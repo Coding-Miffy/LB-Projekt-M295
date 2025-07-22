@@ -174,22 +174,111 @@ Drei Events mit unterschiedlichen Kategorien wurden in die Datenbank geschrieben
 Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. Der Mock-Service lieferte ein einzelnes geschlossenes Event zurück. Der Test prüfte, ob dieses Event korrekt im JSON-Response enthalten war und den erwarteten Status hatte.
 
 ## Installationsanleitung
-[Einleitung]
+In den folgenden Abschnitten wird beschrieben, wie das Backend des *Earth Natural Events Tracker* installiert und gestartet werden kann.  
+Zusätzlich wird erklärt, wie das React-Frontend lokal ausgeführt und mit der REST-API verbunden werden kann.
 
-[Anleitung]
+### Voraussetzungen
+Für die Ausführung werden folgende Komponenten benötigt:
+
+**Backend**:
+- **Java Development Kit (JDK) 17** oder neuer
+- **Maven**
+- **Git** (zum Klonen des Repositories)
+- **PostgreSQL-Datenbank** (lokal oder gehostet, z. B. DBeaver)
+
+**Optional für die Frontend-Integration**:
+- **Node.js** (empfohlene LTS-Version)
+- **npm** (wird automatisch mit Node.js installiert)
+
+### Projekt vorbereiten
+**1. Projektverzeichnis entpacken oder aus dem Repository klonen**:
+
+```bash
+git clone https://github.com/Coding-Miffy/LB-Projekt-M295.git
+```
+
+**2. In das Projektverzeichnis wechseln**:
+
+```bash
+cd LB-Projekt-M295
+```
+
+### Datenbank vorbereiten
+- PostgreSQL-Instanz starten (z. B. auf DBeaver)
+- Neue Datenbank anlegen
+- Benutzer:in mit passenden Rechten anlegen
+
+### Datenbank-Zugangsdaten eintragen
+Die Zugangsdaten zur Datenbank müssen entweder:
+
+- in der Datei `src/main/resources/application.properties` angepasst werden, **oder**
+
+- als Umgebungsvariablen übergeben werden
+
+
+### Backend starten
+Die Anwendung kann mit folgendem Befehl gestartet werden:
+
+```bash
+mvn spring-boot:run
+```
+
+>[!NOTE]
+>Unter `src/main/resources/data/data.sql` befinden sich einige Beispiel-Events, die beim Start in die Datenbank eingefügt werden, **sofern** die Tabelle beim Start leer ist.
+
+### Optional: Frontend installieren und starten
+**1. Ins Frontend-Verzeichnis wechseln**:
+
+```bash
+cd frontend
+```
+
+**2. Abhängigkeiten installieren**:
+
+```bash
+npm install
+```
+
+**3. Entwicklungsserver starten**:
+
+```bash
+npm start
+```
+
+Die Anwendung ist anschliessend unter [http://localhost:5173](http://localhost:5173) erreichbar.
+
+>[!NOTE]
+>Die CORS-Konfiguration ist im Backend (`WebConfig.java`) entsprechend angepasst. Falls das Frontend auf einem anderen Port läuft, muss dieser in der Methode `addCorsMappings()` explizit freigegeben sein.
 
 ## Dokumentation
-[Einleitung]
+Die Applikation verfügt über zwei Arten technischer Dokumentation: **Swagger / OpenAPI** und **JavaDoc**. Beide werden nachfolgend kurz erläutert.
 
-### Swagger
-[Einleitung]  
-[Link]
->[!NOTE]
->**Swagger**: http://localhost:8080/swagger-ui/index.html
+### Swagger / OpenAPI
+Die REST-Schnittstellen des Backends sind mittels Swagger automatisch dokumentiert.  
+Nach dem Start der Applikation ist die Dokumentation unter folgender URL aufrufbar:
+
+```bash
+http://localhost:8080/swagger-ui/index.html
+```
+
+Dort sind alle verfügbaren Endpunkte übersichtlich dargestellt, inklusive Parameter, Rückgabewerten und HTTP-Statuscodes. Diese Oberfläche kann zur Exploration und zum Testen der API verwendet werden.
 
 ### JavaDoc
-[Einleitung]  
-[Link]
+Der Quellcode ist ausführlich mit JavaDoc-Kommentaren versehen. Diese Dokumentation beschreibt die wichtigsten Klassen, DTOs und Methoden inklusive ihrer Aufgaben, Parameter und Rückgabewerte.
+
+Um die JavaDoc-Dokumentation lokal zu generieren, kann folgender Maven-Befehl verwendet werden:
+
+```bash
+mvn javadoc:javadoc
+```
+
+Die generierte HTML-Dokumentation befindet sich anschliessend in diesem Verzeichnis:
+
+```bash
+target/site/apidocs/index.html
+```
+
+Diese Datei kann im Browser geöffnet werden, um einen detaillierten Überblick über die Klassenstruktur und deren Beziehungen zu erhalten.
 
 ## Hilfestellungen
 [Einleitung Hilfestellungen]

@@ -67,7 +67,22 @@ Die REST-Endpunkte sind im `EventController` definiert und folgen den Konvention
 | Methode | Pfad | Beschreibung |
 | :-: | :-- | :-- |
 | `GET` | `/api/events` | Listet alle gespeicherten Naturereignisse auf |
-|  |  |  |
+| `GET` | `/api/events/{id}` | Gibt ein spezifisches Naturereigniss anhand der ID zurück |
+| `GET` | `/api/events/categories/{category}` | Listet alle Naturereignisse einer Kategorie auf |
+| `GET` | `/api/events/status/{status}` | Listet alle Naturereignisse eines Status auf |
+| `GET` | `/api/events/date/{date}` | Listet alle Naturereignisse eines Datums auf |
+| `GET` | `/api/events/filter` | Filtert Naturereignisse nach Kombination von Kategorie, Status und Zeitraum |
+| `GET` | `/api/events/count` | Gibt die Gesamtzahl aller gespeicherter Naturereignisse zurück |
+| `GET` | `/api/events/stats/categories/{category}` | Gibt die Gesamtzahl aller Naturereignisse einer Kategorie zurück |
+| `GET` | `/api/events/stats/status/{status}` | Gibt die Gesamtzahl aller Naturereignisse eines Status zurück |
+| `GET` | `/api/events/stats/date/{start}/{end}` | Gibt die Gesamtzahl aller Naturereignisse eines Datumsbereichs zurück |
+| `POST` | `/api/events` | Speichert ein neues Naturereignis |
+| `PUT` | `/api/events/{id}` | Aktualisiert ein bestehendes Naturereignis anhand der ID |
+| `DELETE` | `/api/events/{id}` | Löscht ein bestehendes Naturereignis anhand der ID |
+| `GET` | `/api/events/all` | Listet alle gespeicherten Naturereignisse als Formulardaten auf |
+| `GET` | `/api/events/{id}/edit` | Gibt ein spezifisches Naturereigniss anhand der ID in Formulardaten zurück |
+| `POST` | `/api/events/create` | Speichert ein neues Naturereignis in Formulardaten |
+| `PUT` | `/api/events/{id}/update` | Aktualisiert ein bestehendes Naturereignis anhand der ID in Formulardaten |
 
 ### Besonderheiten
 - **Validierung**: Eingehende Daten werden mithilfe von Bean Validation überprüft. Ungültige Eingaben führen zu spezifischen Fehlermeldungen.

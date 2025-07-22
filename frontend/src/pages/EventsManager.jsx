@@ -45,7 +45,6 @@ const CustomEvents = () => {
                 const updatedEvents = savedEvents.map((e) => e.id === updatedEvent.id ? updatedEvent : e);
 
                 setSavedEvents(updatedEvents);
-                // TODO: Toast oder Benachrichtigung anzeigen
                 console.log("Event erfolgreich aktualisiert: ", updatedEvent);
             }
         } catch (error) {

@@ -1,14 +1,14 @@
 # Projektdokumentation
 **Modul**: 295   
 **Autor:in**: Natascha Blumer  
-**Datum**:  
-**Version**:  
+**Datum**: 22.07.2025  
+**Version**: 1.0  
 
 ## Einleitung
 [Hier kommt Einleitung]
 
 ## Projektidee
-Ich entwickle ein Backend für eine bestehende React-Frontend-Applikation (*Eaart Natural Events Tracker*, Modul 294), mit der Nutzer:innen aktuelle und vergangene Naturereignisse wie Waldbrände, Erdbeben oder Überschwemmungen entdecken und dokumentieren können.
+Ich entwickle ein Backend für eine bestehende React-Frontend-Applikation (*Earth Natural Events Tracker*, Modul 294), mit der Nutzer:innen aktuelle und vergangene Naturereignisse wie Waldbrände, Erdbeben oder Überschwemmungen entdecken und dokumentieren können.
 
 Das Backend stellt eine REST-API zur Verfügung, über welche autorisierte Benutzer:innen (z. B. Forscher:innen oder Behörden) neue Naturereignisse erfassen, bestehende aktualisieren oder nicht mehr relevante Einträge löschen können. Zusätzlich werden Filter- und Statistik-Endpunkte angeboten, um Ereignisse nach Datum, Kategorie oder Status auszuwerten. Die Daten werden persistent in einer PostgreSQL-Datenbank gespeichert.
 
@@ -44,11 +44,71 @@ Die nachfolgende Liste dokumentiert die zentralen funktionalen Anforderungen der
 | F7 | Die Anwendung soll validieren, dass alle Pflichtfelder korrekt ausgefüllt sind. |
 | F8 | Die REST-API soll im JSON-Format kommunizieren. |
 
-## Diagramm der Modell-Komponenten
-[WIP]
+## Klassendiagramm der Backend-Komponenten
+Das folgende Klassendiagramm veranschaulicht den strukturellen Aufbau der entwickelten Applikation sowie die Beziehungen zwischen den zentralen Komponenten. Es bildet die wichtigsten Klassen, Enums, Interfaces und benutzerdefinierten Exceptions des Projekts ab und zeigt deren Zusammenspiel in der Backend-Architektur.
+
+Im Mittelpunkt steht der `EventService`, der als zentrale Geschäftslogik fungiert. Er greift auf das `EventRepository` zur Datenpersistenz zu und verwendet den `EventMapper` zur Konvertierung zwischen den Entitäten (`Event`) und den Datenübertragungsobjekten (`EventDTO`, `EventFormDTO`). Die REST-Schnittstelle wird über den `EventController` bereitgestellt, der eingehende Anfragen entgegennimmt und an den Service weiterleitet.
+
+![Klassendiagramm](/resources/class-diagram.jpg)
+
+Zusätzlich zeigt das Diagramm den globalen Exception-Handler (`GlobalExceptionHandler`), der alle anwendungsweiten Fehlerfälle behandelt und einheitliche Fehlermeldungen in Form von `ErrorResponseDTO` zurückliefert. Eigene Exceptionklassen wie `EventNotFoundException` oder `InvalidEventDataException` dienen zur gezielten Fehlerdifferenzierung.
+
+Zur besseren Lesbarkeit wurden alle Abhängigkeiten als «uses»-Beziehungen gekennzeichnet. Die Pfeile geben jeweils an, welche Klasse eine andere verwendet. Die Enums `EventStatus` und `EventCategory` werden sowohl in den Entitäten als auch in der Business-Logik verwendet.
+
+Das Diagramm bietet damit eine übersichtliche Darstellung der Klassenstruktur und erleichtert das Verständnis für den Aufbau und die Verantwortlichkeiten innerhalb der Anwendung.
 
 ## REST-Schnittstellen
-[WIP]
+Die entwickelte Applikation stellt eine REST-API zur Verfügung, über die alle relevanten Operationen auf Naturereignissen durchgeführt werden können. Diese Schnittstellen bilden die zentrale Interaktionsebene für das Frontend sowie potenzielle Drittanwendungen.
+
+### Aufbau
+Die REST-Endpunkte sind im `EventController` definiert und folgen weitestgehend den Konventionen für Ressourcen-orientierte APIs. Alle Anfragen und Antworten verwenden das JSON-Format, und HTTP-Statuscodes werden konsistent zur Rückmeldung über den Erfolg oder Fehler einer Operation eingesetzt.
+
+### Unterstützte Endpunkte
+| Methode | Pfad | Beschreibung |
+| :-: | :-- | :-- |
+| `GET` | `/api/events` | Listet alle gespeicherten Naturereignisse auf |
+| `GET` | `/api/events/{id}` | Gibt ein spezifisches Naturereigniss anhand der ID zurück |
+| `GET` | `/api/events/categories/{category}` | Listet alle Naturereignisse einer Kategorie auf |
+| `GET` | `/api/events/status/{status}` | Listet alle Naturereignisse eines Status auf |
+| `GET` | `/api/events/date/{date}` | Listet alle Naturereignisse eines Datums auf |
+| `GET` | `/api/events/filter` | Filtert Naturereignisse nach Kombination von Kategorie, Status und Zeitraum |
+| `GET` | `/api/events/count` | Gibt die Gesamtzahl aller gespeicherter Naturereignisse zurück |
+| `GET` | `/api/events/stats/categories/{category}` | Gibt die Gesamtzahl aller Naturereignisse einer Kategorie zurück |
+| `GET` | `/api/events/stats/status/{status}` | Gibt die Gesamtzahl aller Naturereignisse eines Status zurück |
+| `GET` | `/api/events/stats/date/{start}/{end}` | Gibt die Gesamtzahl aller Naturereignisse eines Datumsbereichs zurück |
+| `POST` | `/api/events` | Speichert ein neues Naturereignis |
+| `PUT` | `/api/events/{id}` | Aktualisiert ein bestehendes Naturereignis anhand der ID |
+| `DELETE` | `/api/events/{id}` | Löscht ein bestehendes Naturereignis anhand der ID |
+| `GET` | `/api/events/all` | Listet alle gespeicherten Naturereignisse als Formulardaten auf |
+| `GET` | `/api/events/{id}/edit` | Gibt ein spezifisches Naturereigniss anhand der ID in Formulardaten zurück |
+| `POST` | `/api/events/create` | Speichert ein neues Naturereignis in Formulardaten |
+| `PUT` | `/api/events/{id}/update` | Aktualisiert ein bestehendes Naturereignis anhand der ID in Formulardaten |
+
+### Besonderheiten
+- **Validierung**: Eingehende Daten werden mithilfe von Bean Validation überprüft. Ungültige Eingaben führen zu spezifischen Fehlermeldungen.
+
+- **Fehlerbehandlung**: Über den zentralen `GlobalExceptionHandler` werden auftretende Fehler in konsistente Fehlerobjekte (`ErrorResponseDTO`) überführt.
+
+- **CORS-Konfiguration**: Um Cross-Origin-Anfragen vom Frontend (z. B. `http://localhost:3000`) zu ermöglichen, wurde die API gezielt für bestimmte Ursprünge freigegeben. Dies geschieht in der `WebConfig`-Klasse, welche `WebMvcConfigurer` implementiert und die Methode `addCorsMappings()` überschreibt, um gezielt Pfade freizuschalten.
+
+- **Kombination von REST und Formularlogik**: Die API folgt weitgehend RESTful-Prinzipien, bietet jedoch zusätzlich alternative Endpunkte wie `/create`, `/update` oder `/edit` an. Diese orientieren sich an Formulardaten-Workflows und erleichtern die Integration in UI-orientierte Anwendungen. Durch diese Hybridstruktur wird eine flexible Anbindung unterschiedlicher Frontends ermöglicht, sowohl für klassische REST-Clients als auch für formularbasierte Web-Oberflächen.
+
+### Beispiel für eine Anfrage
+>**POST**: `/api/events`
+
+Erstellt ein neues Naturereignis basierend auf den übergebenen Daten. Die Anfrage erwartet ein JSON-Objekt basierend auf dem `EventDTO`.
+
+**Request-Body (JSON)**:
+```json
+{
+  "title": "Vulkanausbruch Island",
+  "date": "2025-07-01",
+  "latitude": 64.9631,
+  "longitude": -19.0208,
+  "status": "open",
+  "category": "volcanoes"
+}
+```
 
 ## Testplan
 Dieser Testplan dokumentiert die systematische Überprüfung der Geschäftslogik und API-Funktionalität der entwickelten Spring-Boot-Anwendung. Ziel war es, die wichtigsten Komponenten mit geeigneten Testverfahren abzusichern.
@@ -124,6 +184,8 @@ Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. De
 ### Swagger
 [Einleitung]  
 [Link]
+>[!NOTE]
+>**Swagger**: http://localhost:8080/swagger-ui/index.html
 
 ### JavaDoc
 [Einleitung]  
@@ -139,11 +201,8 @@ Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. De
 Ideen bei Tests  
 Verfassen der JavaDoc Kommentare
 Exception Handling für MethodArgumentTypeMismatchException und HttpMessageNotReadableException
+Beim Erstellen des Klassendiagramms (Beziehungen erkennen)
 
----
->[!NOTE]
->**Swagger**: http://localhost:8080/swagger-ui/index.html
+### Graziano Laveder (Dozent M 295)
 
-## To-Do:  
-- Frontend: Englisch
-- Backend: Deutsch
+### SideQuests M 295

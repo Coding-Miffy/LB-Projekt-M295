@@ -149,6 +149,7 @@ Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. De
 Ideen bei Tests  
 Verfassen der JavaDoc Kommentare
 Exception Handling für MethodArgumentTypeMismatchException und HttpMessageNotReadableException
+Beim Erstellen des Klassendiagramms (Beziehungen erkennen)
 
 ---
 >[!NOTE]

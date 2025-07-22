@@ -5,7 +5,9 @@
 **Version**: 1.0  
 
 ## Einleitung
-[Hier kommt Einleitung]
+Diese Projektdokumentation entstand im Rahmen des **Moduls M295 – Backend für Applikationen realisieren**. Ziel war es, ein vollständiges Backend mit einer REST-API umzusetzen, das zentrale Konzepte wie **Spring Boot**, **JPA**, **Testautomatisierung** und **API-Dokumentation** integriert.
+
+Als Grundlage diente eine bestehende React-Frontend-Applikation aus Modul 294. Die Umsetzung erfolgte eigenständig und orientierte sich an den technischen und konzeptionellen Vorgaben des Moduls. Diese Dokumentation beschreibt die Projektidee, die Anforderungen, das Design sowie die technische Umsetzung und Testabdeckung der Lösung.
 
 ## Projektidee
 Ich entwickle ein Backend für eine bestehende React-Frontend-Applikation (*Earth Natural Events Tracker*, Modul 294), mit der Nutzer:innen aktuelle und vergangene Naturereignisse wie Waldbrände, Erdbeben oder Überschwemmungen entdecken und dokumentieren können.
@@ -67,7 +69,7 @@ Die REST-Endpunkte sind im `EventController` definiert und folgen weitestgehend 
 | Methode | Pfad | Beschreibung |
 | :-: | :-- | :-- |
 | `GET` | `/api/events` | Listet alle gespeicherten Naturereignisse auf |
-| `GET` | `/api/events/{id}` | Gibt ein spezifisches Naturereigniss anhand der ID zurück |
+| `GET` | `/api/events/{id}` | Gibt ein spezifisches Naturereignis anhand der ID zurück |
 | `GET` | `/api/events/categories/{category}` | Listet alle Naturereignisse einer Kategorie auf |
 | `GET` | `/api/events/status/{status}` | Listet alle Naturereignisse eines Status auf |
 | `GET` | `/api/events/date/{date}` | Listet alle Naturereignisse eines Datums auf |
@@ -91,7 +93,7 @@ Die REST-Endpunkte sind im `EventController` definiert und folgen weitestgehend 
 
 - **CORS-Konfiguration**: Um Cross-Origin-Anfragen vom Frontend (z. B. `http://localhost:3000`) zu ermöglichen, wurde die API gezielt für bestimmte Ursprünge freigegeben. Dies geschieht in der `WebConfig`-Klasse, welche `WebMvcConfigurer` implementiert und die Methode `addCorsMappings()` überschreibt, um gezielt Pfade freizuschalten.
 
-- **Kombination von REST und Formularlogik**: Die API folgt weitgehend RESTful-Prinzipien, bietet jedoch zusätzlich alternative Endpunkte wie `/create`, `/update` oder `/edit` an. Diese orientieren sich an Formulardaten-Workflows und erleichtern die Integration in UI-orientierte Anwendungen. Durch diese Hybridstruktur wird eine flexible Anbindung unterschiedlicher Frontends ermöglicht, sowohl für klassische REST-Clients als auch für formularbasierte Web-Oberflächen.
+- **Kombination von REST und Formularlogik**: Die API folgt weitgehend RESTful-Prinzipien, bietet jedoch zusätzlich alternative Endpunkte wie `/create`, `/update` oder `/edit` an. Inhaltlich ähneln sie den regulären REST-Operationen, sind jedoch auf die Anforderungen formularbasierter Benutzeroberflächen abgestimmt und erleichtern die Integration in UI-orientierte Anwendungen. Die parallele Bereitstellung dieser Endpunkte stellt sicher, dass sowohl **klassische REST-Clients** als auch **formularzentrierte Web-UIs** effizient mit der API interagieren können.
 
 ### Beispiel für eine Anfrage
 >**POST**: `/api/events`
@@ -254,7 +256,7 @@ Die Anwendung ist anschliessend unter [http://localhost:5173](http://localhost:5
 Die Applikation verfügt über zwei Arten technischer Dokumentation: **Swagger / OpenAPI** und **JavaDoc**. Beide werden nachfolgend kurz erläutert.
 
 ### Swagger / OpenAPI
-Die REST-Schnittstellen des Backends sind mittels Swagger automatisch dokumentiert.  
+Die OpenAPI-Dokumentation wurde mithilfe der `springdoc-openapi`-Bibliothek umgesetzt und durch gezielte Annotations wie `@Operation` und `@ApiResponse` ergänzt.
 Nach dem Start der Applikation ist die Dokumentation unter folgender URL aufrufbar:
 
 ```bash
@@ -281,17 +283,24 @@ target/site/apidocs/index.html
 Diese Datei kann im Browser geöffnet werden, um einen detaillierten Überblick über die Klassenstruktur und deren Beziehungen zu erhalten.
 
 ## Hilfestellungen
-[Einleitung Hilfestellungen]
+Während der Entwicklung dieses Projekts habe ich auf verschiedene externe Hilfsmittel zurückgegriffen, um gezielt Unterstützung bei der Umsetzung, Strukturierung und Dokumentation zu erhalten.  
+Sie trugen dazu bei, fachliche Unsicherheiten zu klären, bewährte Vorgehensweisen zu übernehmen und die Qualität der Lösung zu verbessern.
 
 ### ChatGPT
-- Rechtschreibekorrektur und als Unterstützung beim Verfassen von Textabschnitten der Dokumentation.
+ChatGPT wurde punktuell als Unterstützung eingesetzt, insbesondere in folgenden Bereichen:
 
-@PastOrPresent bei EventDTO  
-Ideen bei Tests  
-Verfassen der JavaDoc Kommentare
-Exception Handling für MethodArgumentTypeMismatchException und HttpMessageNotReadableException
-Beim Erstellen des Klassendiagramms (Beziehungen erkennen)
+- **Rechtschreib- und Stilkorrektur** sowie Hilfestellung beim Verfassen von Textabschnitten der Projektdokumentation
+- Unterstützung bei der **Formulierung von JavaDoc-Kommentaren** für zentrale Klassen und Methoden
+- **Ideengebung für sinnvolle Testszenarien** und deren Umsetzung
+- **Empfehlung zur Verwendung von Annotationen** wie `@PastOrPresent` für valide Datumswerte im `EventDTO`
+- **Unterstützung beim Exception Handling**, insbesondere für `MethodArgumentTypeMismatchException` und `HttpMessageNotReadableException`
+- **Erarbeitung des Klassendiagramms**, insbesondere zur Identifikation sinnvoller Beziehungen zwischen Klassen
 
 ### Graziano Laveder (Dozent M 295)
+- Stand bei Rückfragen zu den Anforderungen unterstützend zur Seite und half dabei, den Rahmen des Projekts zu klären und einzuordnen.
 
 ### SideQuests M 295
+Die im Rahmen des Moduls 295 bereitgestellten SideQuests dienten als wertvolle Orientierungshilfe und Grundlage für die Umsetzung:
+
+- Beispiele und Lösungsansätze in den Übungsaufgaben gaben Struktur vor
+- Technische Vorgaben und empfohlene Herangehensweisen konnten direkt übernommen oder angepasst werden

@@ -186,7 +186,8 @@ Für die Ausführung werden folgende Komponenten benötigt:
 - **Java Development Kit (JDK) 17** oder neuer
 - **Maven**
 - **Git** (zum Klonen des Repositories)
-- **PostgreSQL-Datenbank** (lokal oder gehostet, z. B. DBeaver)
+- **Docker**
+- **Docker Compose**
 
 **Optional für die Frontend-Integration**:
 - **Node.js** (empfohlene LTS-Version)
@@ -205,21 +206,43 @@ git clone https://github.com/Coding-Miffy/LB-Projekt-M295.git
 cd LB-Projekt-M295
 ```
 
-### Datenbank vorbereiten
-- PostgreSQL-Instanz starten (z. B. auf DBeaver)
-- Neue Datenbank anlegen
-- Benutzer:in mit passenden Rechten anlegen
+**3. Umgebungsvariablen der Zugangsdaten erstellen**:
 
-### Datenbank-Zugangsdaten eintragen
-Die Zugangsdaten zur Datenbank müssen entweder:
+Im Projektverzeichnis eine `.env`-Datei erstellen **oder** die Variablen in der IDE hinterlegen (z. B. IntelliJ unter `Run → Edit Configurations → Environment Variables`):
 
-- in der Datei `src/main/resources/application.properties` angepasst werden, **oder**
+```text
+DB_USERNAME=benutzername
+DB_PASSWORD=passwort
+```
 
-- als Umgebungsvariablen übergeben werden
+### PostgreSQL-Datenbank via Docker Compose starten
+Die PostgreSQL-Datenbank wird über Docker Compose gestartet. Dadurch wird automatisch ein Container mit der korrekten Konfiguration bereitgestellt.  
 
+**Ins Docker-Verzeichnis wechseln und die Dienste starten**:
+
+```bash
+cd docker
+docker-compose up -d
+```
+
+**Die Datenbank ist danach unter folgenden Einstellungen erreichbar**:
+
+```text
+Host: localhost
+Port: 5432
+Datenbank: eonet_app
+Benutzer: ${DB_USERNAME}
+Passwort: ${DB_PASSWORD}
+```
 
 ### Backend starten
-Die Anwendung kann mit folgendem Befehl gestartet werden:
+**1. Wieder zurück in das Projektverzeichnis wechseln**:
+
+```bash
+cd ..
+```
+
+**2. Anwendung mit folgendem Befehl starten**:
 
 ```bash
 mvn spring-boot:run

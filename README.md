@@ -1,7 +1,7 @@
 # Projektdokumentation
 **Modul**: 295   
 **Autor:in**: Natascha Blumer  
-**Datum**: 22.07.2025  
+**Datum**: 23.07.2025  
 **Version**: 1.0  
 
 ## Einleitung
@@ -192,6 +192,9 @@ Für die Ausführung werden folgende Komponenten benötigt:
 **Optional für die Frontend-Integration**:
 - **Node.js** (empfohlene LTS-Version)
 - **npm** (wird automatisch mit Node.js installiert)
+
+**Empfohlene IDE**:
+- IntelliJ
 
 ### Projekt vorbereiten
 **1. Projektverzeichnis entpacken oder aus dem Repository klonen**:

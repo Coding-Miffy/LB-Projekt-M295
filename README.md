@@ -146,32 +146,32 @@ Zur Sicherstellung der Funktionalität der REST-API wurden insgesamt **6 Testfä
 Alle Tests wurden automatisiert durchgeführt und vollständig bestanden.
 
 ### T1 - Abruf aller Events
->**Methode**: `EventService.getAllEvents()`
+**Methode**: `EventService.getAllEvents()`
 
 Die Methode `getAllEvents()` wurde mit einem gemockten Repository getestet. Dieses lieferte zwei vordefinierte Event-Objekte zurück. Anschliessend wurde überprüft, ob die zurückgegebene Liste korrekt ist und ob `findAll()` wie erwartet aufgerufen wurde.  
 
 ### T2 - DTO-Konvertierung
->**Methode**: `EventService.getAllEventsAsDTO()`
+**Methode**: `EventService.getAllEventsAsDTO()`
 
 Ein einzelnes Event mit definierten Feldern wurde vom Mock-Repository zurückgegeben. Der Test prüfte, ob die Felder korrekt ins DTO übertragen wurden (z. B. Titel, Datum, Kategorie, Koordinaten, Status).
 
 ### T3 - Event speichern und finden
->**Methode**: `EventRepository.findById()`
+**Methode**: `EventRepository.findById()`
 
 Ein neues Event wurde mit dem `TestEntityManager` persistiert. Danach wurde mit `findById()` versucht, das Event zu laden. Der Test verifizierte, dass das Event existiert und die erwarteten Felder korrekt gespeichert wurden.
 
 ### T4 - Events nach Kategorie
->**Methode**: `EventRepository.findByCategory()`
+**Methode**: `EventRepository.findByCategory()`
 
 Drei Events mit unterschiedlichen Kategorien wurden in die Datenbank geschrieben. Anschliessend wurde die Methode `findByCategory()` mit dem Wert `wildfires` getestet. Der Test prüfte, ob genau zwei passende Events zurückgegeben wurden.
 
 ### T5 - REST-Antwort
->**Methode**: `EventController.getAllEvents()`
+**Methode**: `EventController.getAllEvents()`
 
 Über `MockMvc` wurde ein HTTP-GET-Request an `/api/events` simuliert. Der Mock-Service lieferte zwei Events zurück. Der Test prüfte, ob die JSON-Antwort korrekt strukturiert war und den Titel des ersten Events korrekt enthielt.
 
 ### T6 - REST-Antwort
->**Methode**: `EventController.getEventsByStatus()`
+**Methode**: `EventController.getEventsByStatus()`
 
 Ein GET-Request an `/api/events/status/closed` wurde mit `MockMvc` simuliert. Der Mock-Service lieferte ein einzelnes geschlossenes Event zurück. Der Test prüfte, ob dieses Event korrekt im JSON-Response enthalten war und den erwarteten Status hatte.
 
@@ -197,19 +197,19 @@ Für die Ausführung werden folgende Komponenten benötigt:
 - IntelliJ
 
 ### Projekt vorbereiten
-**1. Projektverzeichnis entpacken oder aus dem Repository klonen**:
+**Projektverzeichnis entpacken oder aus dem Repository klonen**:
 
 ```bash
 git clone https://github.com/Coding-Miffy/LB-Projekt-M295.git
 ```
 
-**2. In das Projektverzeichnis wechseln**:
+**In das Projektverzeichnis wechseln**:
 
 ```bash
 cd LB-Projekt-M295
 ```
 
-**3. Umgebungsvariablen der Zugangsdaten erstellen**:
+**Umgebungsvariablen der Zugangsdaten erstellen**:
 
 Im Projektverzeichnis eine `.env`-Datei erstellen **oder** die Variablen in der IDE hinterlegen (z. B. IntelliJ unter `Run → Edit Configurations → Environment Variables`):
 
@@ -239,13 +239,13 @@ Passwort: ${DB_PASSWORD}
 ```
 
 ### Backend starten
-**1. Wieder zurück in das Projektverzeichnis wechseln**:
+**Wieder zurück in das Projektverzeichnis wechseln**:
 
 ```bash
 cd ..
 ```
 
-**2. Anwendung mit folgendem Befehl starten**:
+**Anwendung mit folgendem Befehl starten**:
 
 ```bash
 mvn spring-boot:run
@@ -255,19 +255,19 @@ mvn spring-boot:run
 >Unter `src/main/resources/data/data.sql` befinden sich einige Beispiel-Events, die beim Start in die Datenbank eingefügt werden, **sofern** die Tabelle beim Start leer ist.
 
 ### Optional: Frontend installieren und starten
-**1. Ins Frontend-Verzeichnis wechseln**:
+**Ins Frontend-Verzeichnis wechseln**:
 
 ```bash
 cd frontend
 ```
 
-**2. Abhängigkeiten installieren**:
+**Abhängigkeiten installieren**:
 
 ```bash
 npm install
 ```
 
-**3. Entwicklungsserver starten**:
+**Entwicklungsserver starten**:
 
 ```bash
 npm start

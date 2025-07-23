@@ -214,8 +214,8 @@ cd LB-Projekt-M295
 Im Projektverzeichnis eine `.env`-Datei erstellen **oder** die Variablen in der IDE hinterlegen (z. B. IntelliJ unter `Run → Edit Configurations → Environment Variables`):
 
 ```text
-DB_USERNAME=benutzername
-DB_PASSWORD=passwort
+DB_USERNAME=<benutzername>
+DB_PASSWORD=<passwort>
 ```
 
 ### PostgreSQL-Datenbank via Docker Compose starten

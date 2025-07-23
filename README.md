@@ -197,62 +197,50 @@ Für die Ausführung werden folgende Komponenten benötigt:
 - IntelliJ
 
 ### Projekt vorbereiten
-**Projektverzeichnis entpacken oder aus dem Repository klonen**:
+**Projektverzeichnis klonen oder entpacken**:
 
 ```bash
 git clone https://github.com/Coding-Miffy/LB-Projekt-M295.git
-```
-
-**In das Projektverzeichnis wechseln**:
-
-```bash
 cd LB-Projekt-M295
-```
-
-**Umgebungsvariablen der Zugangsdaten erstellen**:
-
-Im Projektverzeichnis eine `.env`-Datei erstellen **oder** die Variablen in der IDE hinterlegen (z. B. IntelliJ unter `Run → Edit Configurations → Environment Variables`):
-
-```text
-DB_USERNAME=<benutzername>
-DB_PASSWORD=<passwort>
 ```
 
 ### PostgreSQL-Datenbank via Docker Compose starten
 Die PostgreSQL-Datenbank wird über Docker Compose gestartet. Dadurch wird automatisch ein Container mit der korrekten Konfiguration bereitgestellt.  
 
-**Ins Docker-Verzeichnis wechseln und die Dienste starten**:
+**Ins Docker-Verzeichnis wechseln und Container starten**:
 
 ```bash
 cd docker
 docker-compose up -d
 ```
 
-**Die Datenbank ist danach unter folgenden Einstellungen erreichbar**:
+**Verbindungsdetails der Datenbank**:
 
 ```text
 Host: localhost
 Port: 5432
 Datenbank: eonet_app
-Benutzer: ${DB_USERNAME}
-Passwort: ${DB_PASSWORD}
+Benutzer: eonet_user
+Passwort: eonet_password
+```
+
+### Beispiel-Events einmalig einfügen
+Im Verzeichnis `src/main/resources/data/` befindet sich die Datei `data.sql`, mit der einige Beispiel-Events in die Datenbank eingefügt werden können. Dieser Schritt ist optional und sollte **nur einmalig** ausgeführt werden.
+
+**Im Terminal ins Verzeichnis wechseln und folgenden Befehl ausführen**:
+
+```bash
+Get-Content data.sql | docker exec -i eonet_postgres psql -U eonet_user -d eonet_app
 ```
 
 ### Backend starten
-**Wieder zurück in das Projektverzeichnis wechseln**:
-
-```bash
-cd ..
-```
-
-**Anwendung mit folgendem Befehl starten**:
+**Zurück ins Projektverzeichnis wechseln und das Backend mit Maven starten**:
 
 ```bash
 mvn spring-boot:run
 ```
 
->[!NOTE]
->Unter `src/main/resources/data/data.sql` befinden sich einige Beispiel-Events, die beim Start in die Datenbank eingefügt werden, **sofern** die Tabelle beim Start leer ist.
+Die Anwendung ist anschliessend unter [http://localhost:8080](http://localhost:8080) erreichbar.
 
 ### Optional: Frontend installieren und starten
 **Ins Frontend-Verzeichnis wechseln**:
@@ -273,7 +261,7 @@ npm install
 npm start
 ```
 
-Die Anwendung ist anschliessend unter [http://localhost:5173](http://localhost:5173) erreichbar.
+Das Backend ist anschliessend unter [http://localhost:5173](http://localhost:5173) erreichbar.
 
 >[!NOTE]
 >Die CORS-Konfiguration ist im Backend (`WebConfig.java`) entsprechend angepasst. Falls das Frontend auf einem anderen Port läuft, muss dieser in der Methode `addCorsMappings()` explizit freigegeben sein.

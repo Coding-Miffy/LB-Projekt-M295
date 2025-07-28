@@ -1,8 +1,8 @@
 # Projektdokumentation
 **Modul**: 295   
 **Autor:in**: Natascha Blumer  
-**Datum**: 23.07.2025  
-**Version**: 1.0  
+**Datum**: 28.07.2025  
+**Version**: 2.0  
 
 ## Einleitung
 Diese Projektdokumentation entstand im Rahmen des **Moduls M295 – Backend für Applikationen realisieren**. Ziel war es, ein vollständiges Backend mit einer REST-API umzusetzen, das zentrale Konzepte wie **Spring Boot**, **JPA**, **Testautomatisierung** und **API-Dokumentation** integriert.
@@ -205,7 +205,14 @@ cd LB-Projekt-M295
 ```
 
 ### PostgreSQL-Datenbank via Docker Compose starten
-Die PostgreSQL-Datenbank wird über Docker Compose gestartet. Dadurch wird automatisch ein Container mit der korrekten Konfiguration bereitgestellt.  
+Die PostgreSQL-Datenbank wird über Docker Compose gestartet. Dadurch wird automatisch ein Container mit der korrekten Konfiguration bereitgestellt. Zuerst müssen aber Benutzername und Passwort für die Datenbank definiert werden.  
+
+**Benutzername und Passwort im `docker-compose.yml` definieren**:
+
+```yaml
+POSTGRES_USER: [YOUR-DB-USER] # TODO: Mit tatsächlichem Usernamen ersetzen
+POSTGRES_PASSWORD: [YOUR-DB-PASSWORD] # TODO: Mit tatsächlichem Passwort ersetzen
+```
 
 **Ins Docker-Verzeichnis wechseln und Container starten**:
 
@@ -220,8 +227,8 @@ docker-compose up -d
 Host: localhost
 Port: 5432
 Datenbank: eonet_app
-Benutzer: eonet_user
-Passwort: eonet_password
+Benutzer: [YOUR-DB-USER]
+Passwort: [YOUR-DB-PASSWORD]
 ```
 
 ### Beispiel-Events einmalig einfügen
@@ -232,6 +239,22 @@ Im Verzeichnis `src/main/resources/data/` befindet sich die Datei `data.sql`, mi
 ```bash
 Get-Content data.sql | docker exec -i eonet_postgres psql -U eonet_user -d eonet_app
 ```
+
+### Environment-Variablen in IntelliJ setzen
+Das Backend liest `DB_USERNAME` und `DB_PASSWORD` aus der Umgebung (siehe `application.properties`). 
+
+**In IntelliJ müssen diese Variablen vor dem Start folgendermassen definiert werden**:
+
+- Menü **Run > Edit Configurations**
+- Run-Konfiguration auswählen
+- Unter **Environment variables** eintragen:
+
+```txt
+DB_USERNAME=[YOUR-DB-USER]; DB_PASSWORD=[YOUR-DB-PASSWORD]
+```
+
+>[!IMPORTANT]
+>Diese Variablen müssen zwingend mit dem im `docker-compose.yml` definierten Benutzernamen und Passwort für die Datenbank übereinstimmen.
 
 ### Backend starten
 **Zurück ins Projektverzeichnis wechseln und das Backend mit Maven starten**:
@@ -261,7 +284,7 @@ npm install
 npm start
 ```
 
-Das Backend ist anschliessend unter [http://localhost:5173](http://localhost:5173) erreichbar.
+Das Frontend ist anschliessend unter [http://localhost:5173](http://localhost:5173) erreichbar.
 
 >[!NOTE]
 >Die CORS-Konfiguration ist im Backend (`WebConfig.java`) entsprechend angepasst. Falls das Frontend auf einem anderen Port läuft, muss dieser in der Methode `addCorsMappings()` explizit freigegeben sein.

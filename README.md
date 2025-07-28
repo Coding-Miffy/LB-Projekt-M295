@@ -237,7 +237,7 @@ Im Verzeichnis `src/main/resources/data/` befindet sich die Datei `data.sql`, mi
 **Im Terminal ins Verzeichnis wechseln und folgenden Befehl ausführen**:
 
 ```bash
-Get-Content data.sql | docker exec -i eonet_postgres psql -U eonet_user -d eonet_app
+Get-Content data.sql | docker exec -i eonet_postgres psql -U [YOUR-DB-USER] -d eonet_app
 ```
 
 ### Environment-Variablen in IntelliJ setzen
